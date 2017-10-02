@@ -45,19 +45,23 @@ export default class extends Component {
         this.setState({selected});
     }
 
+    renderCategoryList(categories) {
+        return categories.map((cat, index) => (
+            <ListGroupItem key={`category-item-${index}`}
+                           active={cat === this.state.selected}
+                           onClick={(event) => this.select(event, cat)}>
+                {cat}
+            </ListGroupItem>
+        ));
+    }
+
     render() {
         return (
             <div>
                 <CategoriesNavbar categorySelected={!!this.state.selected}/>
                 <div className="container">
                     <ListGroup>
-                    {MOCK_CATEGORIES.map((cat, index) => (
-                        <ListGroupItem key={`category-item-${index}`}
-                                       active={cat === this.state.selected}
-                                       onClick={(event) => this.select(event, cat)}>
-                            {cat}
-                        </ListGroupItem>
-                    ))}
+                        {this.renderCategoryList(MOCK_CATEGORIES)}
                     </ListGroup>
                 </div>
             </div>
