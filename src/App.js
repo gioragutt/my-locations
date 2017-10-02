@@ -3,6 +3,7 @@ import './App.css';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Categories from './components/Categories';
 import * as consts from './constants';
 
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
@@ -11,12 +12,6 @@ const Locations = () =>
   <div>
     <Navbar title="Locations"/>
     locations
-  </div>;
-
-const Categories = () => 
-  <div>
-    <Navbar title="Categories"/>
-    categories
   </div>;
 
 class App extends Component {
