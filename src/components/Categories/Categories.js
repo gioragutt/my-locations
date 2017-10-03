@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import CategoriesNavbar from './CategoriesNavbar';
-import CategoryForm from './CategoryForm';
+import CategoryFormModal from './CategoryFormModal';
 
-export default class extends Component {
+export default class Categories extends Component {
     constructor(props) {
         super(props);
         
@@ -70,7 +70,7 @@ export default class extends Component {
         }
 
         return (
-            <CategoryForm
+            <CategoryFormModal
                 canSubmit={cat => !this.props.categories.includes(cat)}
                 onSubmit={cat => this.addCategory(cat)}
                 onClose={() => this.closeAddDialog()}
@@ -84,7 +84,7 @@ export default class extends Component {
         }
 
         return (
-            <CategoryForm
+            <CategoryFormModal
                 canSubmit={cat => !this.props.categories.includes(cat)}
                 onSubmit={cat => this.editCategory(cat)}
                 onClose={() => this.closeEditDialog()}

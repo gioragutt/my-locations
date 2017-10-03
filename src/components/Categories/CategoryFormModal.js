@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Modal, Button, FormGroup, FormControl } from 'react-bootstrap';
 
-export default class CategoryForm extends Component {
+export default class CategoryFromModal extends Component {
     
     constructor(props) {
         super(props);
