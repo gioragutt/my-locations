@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
-// import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
+import LocationsNavbar from './LocationsNavbar';
+import LocationFormModal from './LocationFormModal';
 
+import './Locations.css';
 
-export default class extends Component {
+export default class Locations extends Component {
     constructor(props) {
         super(props);
         
@@ -35,7 +38,8 @@ export default class extends Component {
     }
 
     select(location) {
-        if (location.id === this.props.selectedLocation.id) {
+        const { selectedLocation: selected } = this.props;
+        if (selected && location.id === selected.id) {
             this.deselect();
         } else {
             this.props.selectLocation(location);
@@ -46,6 +50,13 @@ export default class extends Component {
         if (!this.state.adding) {
             return;
         }
+
+        return (
+            <LocationFormModal
+                categories={this.props.categories}
+                onClose={() => this.closeAddDialog()}
+            />
+        );
     }
 
     renderEditForm() {
@@ -56,20 +67,62 @@ export default class extends Component {
 
     removeSelectedCategory() {
         const { selectedLocation } = this.props;
+        if (!selectedLocation) {
+            return;
+        }
         this.props.removeLocation(selectedLocation);
     }
 
+    renderHeaders() {
+        return ['Name', 'Address', 'Category', 'Lattitude', 'Longitude'].map((header, index) => 
+            <th key={`${header}-${index}`}>
+                {header}
+            </th>
+        );
+    }
+
+    renderRow(location) {
+        const { selectedLocation } = this.props;
+        const rowSelected = selectedLocation && selectedLocation.id === location.id;
+        return (
+            <tr className={rowSelected ? 'bg-primary' : ''}
+                onClick={() => this.select(location)}
+                key={location.id}>
+                <td>{location.name}</td>
+                <td>{location.address}</td>
+                <td>{location.category}</td>
+                <td>{location.coordinates.lat}</td>
+                <td>{location.coordinates.long}</td>
+            </tr>
+        );
+    }
+
+    renderRows() {
+        return this.props.locations.map(loc => this.renderRow(loc));
+    }
+
     render() {
-        const { locations, selectedLocation } = this.props;
         return (
             <div>
+                <LocationsNavbar
+                    locationSelected={!!this.props.selectedLocation}
+                    onAdd={() => this.openAddDialog()}
+                    onRemove={() => this.removeSelectedCategory()}
+                    onEdit={() => console.log('location edit')} 
+                />
                 {this.renderAddForm()}
                 {this.renderEditForm()}
-                <div className="container">
-                    <div>locations:</div>
-                    <pre>{JSON.stringify(locations)}</pre>
-                    <div>selected location:</div>
-                    <pre>{JSON.stringify(selectedLocation)}</pre>
+                <div className="container locations-table">
+                    <Table responsive>
+                        <thead>
+                            <tr>
+                                {this.renderHeaders()}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderRows()}
+                        </tbody>
+                    </Table>
                 </div>
             </div>
         )

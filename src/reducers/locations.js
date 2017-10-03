@@ -1,44 +1,53 @@
 import {
-    CATEGORIES_ADD,
-    CATEGORIES_EDIT,
-    CATEGORIES_REMOVE,
-    CATEGORIES_SELECT
-} from '../actions/categories';
+    LOCATIONS_ADD,
+    LOCATIONS_EDIT,
+    LOCATIONS_REMOVE,
+    LOCATIONS_SELECT
+} from '../actions/locations';
+
+import * as uuid from 'uuid';
+
+import Location from '../models/location';
 
 const INITIAL_STATE = {
-    selected: '',
+    selected: null,
     items: [
-        'cat1',
-        'cat2'
+        new Location(uuid(), 'Location1', 'Address1', {lat: 33, long: 33}, 'cat1'),
+        new Location(uuid(), 'Location2', 'Address2', {lat: 33, long: 34}, 'cat2'),
     ]
 };
 
-const editCategory = (state, {oldCategory, newCategory}) => {
+const editLocation = (state, {oldLocationId, newLocation}) => {
     return {
         ...state,
-        items: state.items.map(category => category !== oldCategory ? category : newCategory)
+        items: state.items.map(location => location.id !== oldLocationId ? location : newLocation)
     }
 }
 
 const validateSelectedExists = (state, selected) => {
-    return state.items.includes(selected) ? selected : ''
+    if (selected === null) {
+        return null;
+    }
+
+    const locationExists = state.items.find(item => item.id === selected.id) !== undefined;
+    return locationExists ? selected : null
 ;}
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case CATEGORIES_ADD:
+        case LOCATIONS_ADD:
             return {
                 ...state,
                 items: [...state.items, action.payload]
             };
-        case CATEGORIES_EDIT:
-            return editCategory(state, action.payload);
-        case CATEGORIES_REMOVE:
+        case LOCATIONS_EDIT:
+            return editLocation(state, action.payload);
+        case LOCATIONS_REMOVE:
             return {
                 ...state,
-                items: state.items.filter(category => category !== action.payload)
+                items: state.items.filter(location => location !== action.payload)
             };
-        case CATEGORIES_SELECT:
+        case LOCATIONS_SELECT:
             return {
                 ...state,
                 selected: validateSelectedExists(state, action.payload)

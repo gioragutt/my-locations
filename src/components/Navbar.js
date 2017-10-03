@@ -45,10 +45,13 @@ const Navbar = ({title = '', items = []}) => (
       <BsNavbar.Brand>
         {title}
       </BsNavbar.Brand>
+      <BsNavbar.Toggle />
     </BsNavbar.Header>
-    <Nav>
-      <BuildMenuItems items={items} />
-    </Nav>
+    <BsNavbar.Collapse>
+      <Nav>
+        <BuildMenuItems items={items} />
+      </Nav>
+    </BsNavbar.Collapse>
   </BsNavbar>
 );
 
