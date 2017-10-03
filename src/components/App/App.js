@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Categories from './components/Categories';
-import * as consts from './constants';
+import Navbar from '../Navbar';
+import Footer from '../Footer';
+import Categories from '../../containers/Categories';
+
+import { CATEGORIES_ROUTE, LOCATIONS_ROUTE } from '../../constants';
 
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
@@ -20,9 +21,9 @@ class App extends Component {
     <BrowserRouter>
         <div className="App">
           <Switch>
-            <Route path={consts.LOCATIONS_ROUTE} component={Locations} />
-            <Route path={consts.CATEGORIES_ROUTE} component={Categories} />
-            <Redirect from="/" to={consts.LOCATIONS_ROUTE} />
+            <Route path={LOCATIONS_ROUTE} component={Locations} />
+            <Route path={CATEGORIES_ROUTE} component={Categories} />
+            <Redirect from="/" to={LOCATIONS_ROUTE} />
           </Switch>
           <Footer />
         </div>
