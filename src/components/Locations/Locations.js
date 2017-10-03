@@ -159,14 +159,16 @@ export default class Locations extends Component {
             first.name.toLowerCase() > second.name.toLowerCase())
     }
 
+    locationsList() {
+        if (this.state.sortByCategory) {
+            return this.sortByCategory();
+        }
+        
+        return this.sortedLocations(this.props.locations);
+    }
+
     renderRows() {
-        return (() => {
-           if (this.state.sortByCategory) {
-                return this.sortByCategory();
-            }
-            
-            return this.sortedLocations(this.props.locations);
-        })().map(loc => this.renderRow(loc));
+        return this.locationsList().map(loc => this.renderRow(loc));
     }
 
     render() {
