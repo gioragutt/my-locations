@@ -3,11 +3,13 @@ import React, { Component } from 'react'
 import { Modal, Button } from 'react-bootstrap';
 import LocationForm from './LocationForm';
 
-const emptyLocation = () => ({
+import { isLocationValid } from '../../models/location';
+
+const emptyLocation = (category) => ({
     name: '',
     address: '',
-    category: '',
-    location: {lat: 33, long: 33}
+    category,
+    coordinates: {lat: 33, long: 33}
 });
 
 export default class LocationFormModal extends Component {
@@ -15,40 +17,30 @@ export default class LocationFormModal extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            location: {...props.location} || emptyLocation()
-        };
+        this.state = props.location ? {...props.location} : emptyLocation(this.props.categories[0]);
     }
 
     inputValid() {
-        // return isLocationValid(this.location) && this.props.canSubmit(this.state.value);
-        return true;
-    }
-
-    getValidationState() {
-        return this.inputValid() ? 'success' : 'error';
-    }
-
-    handleChange(e) {
-        this.setState({ value: e.target.value });
+        return isLocationValid(this.state, this.props.categories);
     }
 
     renderForm() {
         return (
             <LocationForm 
-                location={this.state.location}
+                location={this.state}
                 categories={this.props.categories}
+                locationChanged={location => this.setState(location)}
+                onSubmit={this.props.onSubmit}
             />
         );
     }
-
+    
     handleSubmit() {
-        const { value } = this.state;
-        const { onSubmit } = this.props;
+        const location = this.state;
 
-        if (this.inputValid(value)) {
-            onSubmit(value);
-            this.setState({value: ''})
+        if (this.inputValid(location)) {
+            this.props.onSubmit(location);
+            this.setState(emptyLocation(this.props.categories[0]))
         }
     }
 
@@ -56,6 +48,7 @@ export default class LocationFormModal extends Component {
         const { onClose, location } = this.props;
         const action = location && location.id !== null ? 'Edit' : 'Add'
         const title = `${action} Location`;
+
         return (
             <Modal show={true} onHide={onClose}>
                 <Modal.Header closeButton>

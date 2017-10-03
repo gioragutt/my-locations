@@ -46,6 +46,11 @@ export default class Locations extends Component {
         }
     }
 
+    addLocation(location) {
+        this.closeAddDialog();
+        this.props.addLocation(location);
+    }
+
     renderAddForm() {
         if (!this.state.adding) {
             return;
@@ -55,6 +60,7 @@ export default class Locations extends Component {
             <LocationFormModal
                 categories={this.props.categories}
                 onClose={() => this.closeAddDialog()}
+                onSubmit={loc => this.addLocation(loc)}
             />
         );
     }

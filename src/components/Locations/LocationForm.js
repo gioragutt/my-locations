@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 import { Form, FormGroup, Col, FormControl, ControlLabel } from 'react-bootstrap';
 
-import { isLocationValid } from '../../models/location';
+import { isLatitudeValid, isLongitudeValid } from '../../models/location';
 
-const FormRow = ({children, title}) => (
-    <FormGroup controlId={title}>
+const FormRow = ({children, title, validationState}) => (
+    <FormGroup controlId={title} validationState={validationState}>
         <Col componentClass={ControlLabel} sm={2}>
             {title}
         </Col>
@@ -14,6 +14,8 @@ const FormRow = ({children, title}) => (
         </Col>
     </FormGroup>
 );
+
+const toValidationState = predicate => predicate ? 'success' : 'error';
 
 export default class LocationForm extends Component {
     constructor(props) {
@@ -28,25 +30,83 @@ export default class LocationForm extends Component {
         )
     }
 
+    handleChange(change) {
+        this.setState(change, () => this.props.locationChanged(this.state));
+    }
+
+    handleNameChange(e) {
+        this.handleChange({name: e.target.value})
+    }
+
+    handleAddressChange(e) {
+        this.handleChange({address: e.target.value})
+    }
+
+    handleCategoryChange(e) {
+        this.handleChange({category: e.target.value})
+    }
+
+    handleLatitudeChange(e) {
+        const coordinates = {...this.state.coordinates, lat: e.target.value};
+        this.handleChange({coordinates})
+    }
+
+    handleLongitudeChange(e) {
+        const coordinates = {...this.state.coordinates, long: e.target.value};
+        this.handleChange({coordinates})
+    }
+
     render() {
+        const { name, address, category, coordinates } = this.state;
         return (
-            <Form horizontal>
-                <FormRow title="Name">
-                    <FormControl type="text" placeholder="Name"/>
+            <Form 
+                horizontal
+                onSubmit={e => {
+                    e.preventDefault();
+                    this.props.onSubmit(this.state);
+                }}
+            >
+                <FormRow title="Name" validationState={toValidationState(name.length > 0)}>
+                    <FormControl
+                        type="text"
+                        placeholder="Name"
+                        onChange={e => this.handleNameChange(e)}
+                        value={name}
+                    />
                 </FormRow>
-                <FormRow title="Address">
-                    <FormControl type="text" placeholder="Address"/>
+                <FormRow title="Address" validationState={toValidationState(address.length > 0)}>
+                    <FormControl
+                        type="text"
+                        placeholder="Address"
+                        onChange={e => this.handleAddressChange(e)}
+                        value={address}
+                    />
                 </FormRow>
-                <FormRow title="Address">
-                    <FormControl componentClass="select" placeholder="Category">
+                <FormRow title="Category">
+                    <FormControl
+                        componentClass="select"
+                        placeholder="Category"
+                        onChange={e => this.handleCategoryChange(e)}
+                        value={category}
+                    >
                         {this.renderCategoryOptions()}
                     </FormControl>
                 </FormRow>
-                <FormRow title="Latitude">
-                    <FormControl type="text" placeholder="Latitude"/>
+                <FormRow title="Latitude" validationState={toValidationState(isLatitudeValid(coordinates.lat))}>
+                    <FormControl
+                        type="text"
+                        placeholder="Latitude"
+                        onChange={e => this.handleLatitudeChange(e)}
+                        value={coordinates.lat}
+                    />
                 </FormRow>
-                <FormRow title="Longtitude">
-                    <FormControl type="text" placeholder="Longtitude"/>
+                <FormRow title="Longtitude" validationState={toValidationState(isLongitudeValid(coordinates.long))}>
+                    <FormControl
+                        type="text"
+                        placeholder="Longtitude"
+                        onChange={e => this.handleLongitudeChange(e)}
+                        value={coordinates.long}
+                    />
                 </FormRow>
             </Form>
         )

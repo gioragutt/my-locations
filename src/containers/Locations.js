@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Locations from '../components/Locations/Locations'
-import { selectLocation, removeLocation } from '../actions/locations'
+import { selectLocation, removeLocation, addLocation } from '../actions/locations'
 
 const mapStateToProps = (state, ownProps) => ({
     locations: state.locations.items,
@@ -10,7 +10,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
     selectLocation,
-    removeLocation
+    removeLocation,
+    addLocation
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Locations)

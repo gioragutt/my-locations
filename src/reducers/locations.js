@@ -33,13 +33,18 @@ const validateSelectedExists = (state, selected) => {
     return locationExists ? selected : null
 ;}
 
+const createNewLocation = (state, location) => {
+    const newLocation = {...location, id: uuid()}
+    return {
+        ...state,
+        items: [...state.items, newLocation]
+    };
+}
+
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case LOCATIONS_ADD:
-            return {
-                ...state,
-                items: [...state.items, action.payload]
-            };
+            return createNewLocation(state, action.payload);
         case LOCATIONS_EDIT:
             return editLocation(state, action.payload);
         case LOCATIONS_REMOVE:
