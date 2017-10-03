@@ -20,17 +20,27 @@ const editCategory = (state, {oldCategory, newCategory}) => {
     }
 }
 
+const categoryExists = (state, category) => state.items.includes(category);
+
 const validateSelectedExists = (state, selected) => {
-    return state.items.includes(selected) ? selected : ''
+    return categoryExists(state, selected) ? selected : ''
 ;}
+
+const addCategory = (state, category) => {
+    if (categoryExists(state, category)) {
+        return state;
+    }
+
+    return {
+        ...state,
+        items: [...state.items, category]
+    };
+}
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case CATEGORIES_ADD:
-            return {
-                ...state,
-                items: [...state.items, action.payload]
-            };
+            return addCategory(state, action.payload);
         case CATEGORIES_EDIT:
             return editCategory(state, action.payload);
         case CATEGORIES_REMOVE:
