@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
 
-import { Table } from 'react-bootstrap';
+import { Table, Glyphicon } from 'react-bootstrap';
 import LocationsNavbar from './LocationsNavbar';
 import LocationFormModal from './LocationFormModal';
 
 import './Locations.css';
+
+const SortGlyph = ({sort}) => {
+    if (sort === 'asc') {
+        return <span>{' '}<Glyphicon glyph="chevron-up"/></span>
+    } else if (sort === 'dsc') {
+        return <span>{' '}<Glyphicon glyph="chevron-down"/></span>
+    }
+
+    return null;
+}
 
 export default class Locations extends Component {
     constructor(props) {
@@ -12,7 +22,8 @@ export default class Locations extends Component {
         
         this.state = {
             adding: false,
-            editing: false
+            editing: false,
+            sortByCategory: null
         };
     }
 
@@ -97,14 +108,6 @@ export default class Locations extends Component {
         this.props.removeLocation(selectedLocation);
     }
 
-    renderHeaders() {
-        return ['Name', 'Address', 'Category', 'Lattitude', 'Longitude'].map((header, index) => 
-            <th key={`${header}-${index}`}>
-                {header}
-            </th>
-        );
-    }
-
     renderRow(location) {
         const { selectedLocation } = this.props;
         const rowSelected = selectedLocation && selectedLocation.id === location.id;
@@ -121,8 +124,49 @@ export default class Locations extends Component {
         );
     }
 
+    toggleCategorySort() {
+        const sortByCategory = (() => {
+            switch (this.state.sortByCategory) {
+                case null:
+                    return 'asc';
+                case 'asc':
+                    return 'dsc';
+                case 'dsc':
+                    return null;
+                default:
+                    return null;
+            }
+        })();
+        this.setState({sortByCategory});
+    }
+
+    sortByCategory() {
+        const { sortByCategory: sortMethod } = this.state;
+        const sort = pred => 
+            this.sortedLocations(this.props.locations)
+                .sort((first, second) => pred(first.category.toLowerCase(), second.category.toLowerCase()));
+                
+        switch (sortMethod) {
+            case null: return [];
+            case 'asc': return sort((a, b) => a < b);
+            case 'dsc': return sort((a, b) => a > b);
+            default: return []
+        }
+    }
+
+    sortedLocations(locations) {
+        return locations.slice().sort((first, second) => 
+            first.name.toLowerCase() > second.name.toLowerCase())
+    }
+
     renderRows() {
-        return this.props.locations.map(loc => this.renderRow(loc));
+        return (() => {
+           if (this.state.sortByCategory) {
+                return this.sortByCategory();
+            }
+            
+            return this.sortedLocations(this.props.locations);
+        })().map(loc => this.renderRow(loc));
     }
 
     render() {
@@ -140,7 +184,14 @@ export default class Locations extends Component {
                     <Table responsive>
                         <thead>
                             <tr>
-                                {this.renderHeaders()}
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th onClick={() => this.toggleCategorySort()}>
+                                    Category
+                                    <SortGlyph sort={this.state.sortByCategory} />
+                                </th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
                             </tr>
                         </thead>
                         <tbody>
