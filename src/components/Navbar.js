@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-    Navbar,
+    Navbar as BsNavbar,
     Nav,
     NavItem,
     NavDropdown,
@@ -39,15 +39,17 @@ const BuildMenuItems = ({items}) => {
   })
 }
 
-export default ({title = '', items = []}) => (
-  <Navbar>
-    <Navbar.Header>
-      <Navbar.Brand>
+const Navbar = ({title = '', items = []}) => (
+  <BsNavbar>
+    <BsNavbar.Header>
+      <BsNavbar.Brand>
         {title}
-      </Navbar.Brand>
-    </Navbar.Header>
+      </BsNavbar.Brand>
+    </BsNavbar.Header>
     <Nav>
       <BuildMenuItems items={items} />
     </Nav>
-  </Navbar>
-)
+  </BsNavbar>
+);
+
+export default Navbar;

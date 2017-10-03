@@ -13,7 +13,7 @@ const GlyphLink = ({icon, path}) => (
   </Link>
 );
 
-export default () => (
+const Footer = () => (
   <footer className="footer">
     <div className="container">
       <GlyphLink path={LOCATIONS_ROUTE} icon="map-marker" />
@@ -22,3 +22,5 @@ export default () => (
     </div>
   </footer> 
 );
+
+export default Footer;

@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '../Navbar';
 
-export default ({categorySelected, onAdd, onRemove, onEdit}) => {
+const CategoriesNavbar = ({categorySelected, onAdd, onRemove, onEdit}) => {
     return <Navbar
         title="Categories"
         items={[
@@ -22,3 +22,5 @@ export default ({categorySelected, onAdd, onRemove, onEdit}) => {
         ]}
     />
 };
+
+export default CategoriesNavbar;

@@ -9,8 +9,10 @@ const store = createStore(
     applyMiddleware(logger)
 );
 
-export default ({children}) => (
+const MyLocationsStoreProvider = ({children}) => (
     <Provider store={store}>
         {children}
     </Provider>
 );
+
+export default MyLocationsStoreProvider;

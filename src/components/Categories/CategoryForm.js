@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Modal, Button, FormGroup, FormControl } from 'react-bootstrap';
 
-export default class extends Component {
+export default class CategoryForm extends Component {
     
     constructor(props) {
         super(props);
@@ -23,8 +23,6 @@ export default class extends Component {
     handleChange(e) {
         this.setState({ value: e.target.value });
     }
-
-
 
     renderForm() {
         return (
