@@ -186,7 +186,7 @@ export default class Locations extends Component {
                             <tr>
                                 <th>Name</th>
                                 <th>Address</th>
-                                <th onClick={() => this.toggleCategorySort()}>
+                                <th className="sortable" onClick={() => this.toggleCategorySort()}>
                                     Category
                                     <SortGlyph sort={this.state.sortByCategory} />
                                 </th>
