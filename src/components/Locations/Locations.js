@@ -65,10 +65,28 @@ export default class Locations extends Component {
         );
     }
 
+    editLocation(location) {
+        if (!this.props.selectedLocation) {
+            return;
+        }
+
+        this.closeEditDialog();
+        this.props.editLocation(this.props.selectedLocation.id, location);
+    }
+
     renderEditForm() {
         if (!this.state.editing) {
             return;
         }
+
+        return (
+            <LocationFormModal
+                categories={this.props.categories}
+                onClose={() => this.closeEditDialog()}
+                onSubmit={loc => this.editLocation(loc)}
+                location={this.props.selectedLocation}
+            />
+        );
     }
 
     removeSelectedCategory() {
@@ -114,7 +132,7 @@ export default class Locations extends Component {
                     locationSelected={!!this.props.selectedLocation}
                     onAdd={() => this.openAddDialog()}
                     onRemove={() => this.removeSelectedCategory()}
-                    onEdit={() => console.log('location edit')} 
+                    onEdit={() => this.openEditDialog()} 
                 />
                 {this.renderAddForm()}
                 {this.renderEditForm()}
