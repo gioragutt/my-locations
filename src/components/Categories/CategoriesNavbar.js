@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '../Navbar';
 
-export default ({categorySelected, onAdd}) => {
+export default ({categorySelected, onAdd, onRemove, onEdit}) => {
     return <Navbar
         title="Categories"
         items={[
@@ -11,12 +11,12 @@ export default ({categorySelected, onAdd}) => {
             },
             {
                 title: 'Edit',
-                onClick: () => console.log('categories edit clicked'),
+                onClick: onEdit,
                 disabled: !categorySelected
             },
             {
                 title: 'Remove',
-                onClick: () => console.log('categories remove clicked'),
+                onClick: onRemove,
                 disabled: !categorySelected
             },
         ]}

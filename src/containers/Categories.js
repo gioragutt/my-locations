@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Categories from '../components/Categories/Categories'
-import { addCategory, selectCategory } from '../actions/categories';
+import { addCategory, selectCategory, removeCategory, editCategory } from '../actions/categories';
 
 const mapStateToProps = (state, ownProps) => ({
     categories: state.categories.items,
@@ -9,7 +9,9 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
     addCategory,
-    selectCategory
+    selectCategory,
+    removeCategory,
+    editCategory
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Categories)

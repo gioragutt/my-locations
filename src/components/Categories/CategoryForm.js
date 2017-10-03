@@ -13,7 +13,7 @@ export default class extends Component {
     }
 
     inputValid() {
-        return this.state.value.length > 0 && this.props.canSubmit(this.state.value);
+        return this.state.value.trim().length > 0 && this.props.canSubmit(this.state.value);
     }
 
     getValidationState() {
@@ -24,9 +24,14 @@ export default class extends Component {
         this.setState({ value: e.target.value });
     }
 
+
+
     renderForm() {
         return (
-            <form onSubmit={e => e.preventDefault()}>
+            <form onSubmit={e => {
+                e.preventDefault()
+                this.handleSubmit();
+            }}>
                 <FormGroup
                     controlId="categoryName"
                     validationState={this.getValidationState()}
@@ -45,19 +50,22 @@ export default class extends Component {
 
     handleSubmit() {
         const { value } = this.state;
-        const { canSubmit, onSubmit } = this.props;
+        const { onSubmit } = this.props;
 
-        if (canSubmit(value)) {
+        if (this.inputValid(value)) {
             onSubmit(value);
+            this.setState({value: ''})
         }
     }
 
     render() {
-        const { show, onClose } = this.props;
+        const { onClose, category } = this.props;
+        const action = !!category ? 'Edit' : 'Add'
+        const title = `${action} Category`;
         return (
-            <Modal show={show} onHide={onClose}>
+            <Modal show={true} onHide={onClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Category</Modal.Title>
+                    <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
     
                 <Modal.Body>
@@ -65,12 +73,12 @@ export default class extends Component {
                 </Modal.Body>
     
                 <Modal.Footer>
-                    <Button onClick={onClose}>Close</Button>
                     <Button disabled={!this.inputValid()}
                             bsStyle="primary"
                             onClick={() => this.handleSubmit()}>
-                        Save changes
+                        {action}
                     </Button>
+                    <Button onClick={onClose}>Close</Button>
                 </Modal.Footer>
             
             </Modal>

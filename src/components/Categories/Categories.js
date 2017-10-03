@@ -9,11 +9,13 @@ export default class extends Component {
         super(props);
         
         this.state = {
-            adding: false
+            adding: false,
+            editing: false
         };
     }
 
     openAddDialog() {
+        this.deselect();
         this.setState({adding: true});
     }
 
@@ -21,9 +23,24 @@ export default class extends Component {
         this.setState({adding: false});
     }
 
+    openEditDialog() {
+        this.setState({editing: true});
+    }
+
+    closeEditDialog() {
+        this.setState({editing: false});
+    }
+
+    deselect() {
+        this.props.selectCategory('');
+    }
+
     select(category) {
-        const selected = category === this.props.selectedCategory ? '' : category;
-        this.props.selectCategory(selected);
+        if (category === this.props.selectedCategory) {
+            this.deselect();
+        } else {
+            this.props.selectCategory(category);
+        }
     }
 
     renderCategoryList(categories) {
@@ -41,21 +58,58 @@ export default class extends Component {
         this.props.addCategory(category);
     }
 
+    editCategory(newCategory) {
+        this.closeEditDialog();
+        const { selectedCategory: oldCategory } = this.props;
+        this.props.editCategory(oldCategory, newCategory);
+    }
+
+    renderAddForm() {
+        if (!this.state.adding) {
+            return;
+        }
+
+        return (
+            <CategoryForm
+                canSubmit={cat => !this.props.categories.includes(cat)}
+                onSubmit={cat => this.addCategory(cat)}
+                onClose={() => this.closeAddDialog()}
+            />
+        )
+    }
+
+    renderEditForm() {
+        if (!this.state.editing) {
+            return;
+        }
+
+        return (
+            <CategoryForm
+                canSubmit={cat => !this.props.categories.includes(cat)}
+                onSubmit={cat => this.editCategory(cat)}
+                onClose={() => this.closeEditDialog()}
+                category={this.props.selectedCategory}
+            />
+        );
+    }
+
+    removeSelectedCategory() {
+        const { selectedCategory } = this.props;
+        this.props.removeCategory(selectedCategory);
+    }
+
     render() {
         const { categories } = this.props;
-        const { adding } = this.state;
         return (
             <div>
                 <CategoriesNavbar
-                    categorySelected={!!this.state.selected}
+                    categorySelected={!!this.props.selectedCategory}
                     onAdd={() => this.openAddDialog()}
+                    onRemove={() => this.removeSelectedCategory()}
+                    onEdit={() => this.openEditDialog()}
                 />
-                <CategoryForm
-                    show={adding}
-                    canSubmit={cat => !this.props.categories.includes(cat)}
-                    onSubmit={cat => this.addCategory(cat)}
-                    onClose={() => this.closeAddDialog()}
-                />
+                {this.renderAddForm()}
+                {this.renderEditForm()}
                 <div className="container">
                     <ListGroup>
                         {this.renderCategoryList(categories)}
