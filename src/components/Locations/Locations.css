@@ -1,5 +1,9 @@
 .locations-table {
     text-align: left;
+    max-height: 300px;
+    min-height: 300px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
 }
 
 .sortable {
