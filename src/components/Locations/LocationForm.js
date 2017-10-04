@@ -27,7 +27,7 @@ export default class LocationForm extends Component {
     renderCategoryOptions() {
         const { categories } = this.props;
         if (categories.length === 0) {
-            return <option value={null}>You must first create a category!</option>
+            return <option value={null}>You must first create a category!</option>;
         }
 
         return this.props.categories.map(cat =>
@@ -40,15 +40,15 @@ export default class LocationForm extends Component {
     }
 
     handleNameChange(e) {
-        this.handleChange({name: e.target.value})
+        this.handleChange({name: e.target.value});
     }
 
     handleAddressChange(e) {
-        this.handleChange({address: e.target.value})
+        this.handleChange({address: e.target.value});
     }
 
     handleCategoryChange(e) {
-        this.handleChange({category: e.target.value})
+        this.handleChange({category: e.target.value});
     }
 
     handleLatitudeChange(e) {

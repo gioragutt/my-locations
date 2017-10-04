@@ -36,7 +36,10 @@ export default class LocationFormModal extends Component {
     }
     
     handleSubmit() {
-        const location = this.state;
+        const location = {...this.state};
+        console.log(location);
+        location.coordinates.lat = Number.parseFloat(location.coordinates.lat);
+        location.coordinates.long = Number.parseFloat(location.coordinates.long);
 
         if (this.inputValid(location)) {
             this.props.onSubmit(location);
