@@ -3,9 +3,7 @@ import React from 'react';
 import {
     Navbar as BsNavbar,
     Nav,
-    NavItem,
-    NavDropdown,
-    MenuItem
+    NavItem
 } from 'react-bootstrap';
 
 const MenuNavItem = ({nav, navIndex, disabled}) => {
@@ -32,7 +30,7 @@ const MenuItems = ({items}) => {
 }
 
 const Navbar = ({title = '', items = []}) => (
-  <BsNavbar>
+  <BsNavbar fixedTop={true}>
     <BsNavbar.Header>
       <BsNavbar.Brand>
         {title}

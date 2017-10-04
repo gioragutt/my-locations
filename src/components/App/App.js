@@ -4,9 +4,9 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 
 import './App.css';
 
-import Footer from '../Footer';
 import Categories from '../../containers/Categories';
 import Locations from '../../containers/Locations';
+import Footer from '../../containers/Footer';
 
 import { CATEGORIES_ROUTE, LOCATIONS_ROUTE } from '../../constants';
 

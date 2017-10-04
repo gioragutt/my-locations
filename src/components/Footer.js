@@ -1,26 +1,26 @@
 import React from 'react';
 
 import { Link } from 'react-router-dom';
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Navbar, Button, Glyphicon } from 'react-bootstrap';
 
 import { CATEGORIES_ROUTE, LOCATIONS_ROUTE } from '../constants';
 
-const GlyphLink = ({icon, path}) => (
+const GlyphLink = ({icon, path, currentRoute}) => (
   <Link to={path}>    
-    <Button>
+    <Button bsStyle={currentRoute === path ? 'primary' : 'default'}>
       <Glyphicon glyph={icon}></Glyphicon>
     </Button>
   </Link>
 );
 
-const Footer = () => (
-  <footer className="footer">
-    <div className="container">
-      <GlyphLink path={LOCATIONS_ROUTE} icon="map-marker" />
+const Footer = ({currentRoute}) => (
+  <Navbar fixedBottom>
+    <footer className="footer">
+      <GlyphLink path={LOCATIONS_ROUTE} icon="map-marker" currentRoute={currentRoute}/>
       {' '}
-      <GlyphLink path={CATEGORIES_ROUTE} icon="tag" />
-    </div>
-  </footer> 
+      <GlyphLink path={CATEGORIES_ROUTE} icon="tag" currentRoute={currentRoute}/>
+    </footer>
+  </Navbar> 
 );
 
 export default Footer;

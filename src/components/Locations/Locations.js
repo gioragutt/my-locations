@@ -180,13 +180,14 @@ export default class Locations extends Component {
                     onRemove={() => this.removeSelectedCategory()}
                     onEdit={() => this.openEditDialog()} 
                 />
-
-                <CategoryFilter
-                    onChange={this.props.setCategoryFilter}
-                    resetFilter={this.props.resetCategoryFilter}
-                    value={this.props.categoryFilter}
-                    availableCategories={this.props.categories}
-                />
+                <div className="category-filter">
+                    <CategoryFilter
+                        onChange={this.props.setCategoryFilter}
+                        resetFilter={this.props.resetCategoryFilter}
+                        value={this.props.categoryFilter}
+                        availableCategories={this.props.categories}
+                    />
+                </div>
                 
                 {this.renderAddForm()}
                 {this.renderEditForm()}
