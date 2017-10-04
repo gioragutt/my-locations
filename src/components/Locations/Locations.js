@@ -7,6 +7,7 @@ import CategoryFilter from './CategoryFilter';
 import SortableLocationsRows from './SortableLocationsRows';
 import './Locations.css';
 
+import vibrate from '../../vibrate';
 import { Map, LocationMarker } from '../Map';
 
 const SortGlyph = ({sort}) => {
@@ -85,6 +86,7 @@ export default class Locations extends Component {
 
     selectFromMap(location) {
         this.toggleSelect(location);
+        vibrate(100);
     }
 
     addLocation(location) {
