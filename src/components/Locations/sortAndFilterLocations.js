@@ -1,16 +1,14 @@
-import React from 'react'
-
-import LocationRows from './LocationRows';
-
-const sortedByName = (locations) => 
-    locations.slice().sort(
+const sortedByName = (locations) => { 
+    return locations.slice().sort(
         (first, second) => first.name.toLowerCase() > second.name.toLowerCase()
     );
+};
 
-const sortByCategoryPredicate = (locations, predicate) =>
-    sortedByName(locations).sort(
+const sortByCategoryPredicate = (locations, predicate) => {
+    return sortedByName(locations).sort(
         (first, second) => predicate(first.category.toLowerCase(), second.category.toLowerCase())
-    )
+    );
+};
 
 const sortedByCategory = (locations, sortMethod) => {
     switch (sortMethod) {
@@ -19,9 +17,9 @@ const sortedByCategory = (locations, sortMethod) => {
         case 'dsc':
             return sortByCategoryPredicate(locations, (a, b) => a > b);
         default:
-            throw Error('Reached sortByCategory when sort method is unset');
+            throw Error(`Reached sortByCategory when sort method is ${sortMethod}`);
     }
-}
+};
 
 const filterLocations = (locations, categoryFilter) => {
     if (!categoryFilter) {
@@ -29,24 +27,15 @@ const filterLocations = (locations, categoryFilter) => {
     }
 
     return locations.filter(loc => loc.category === categoryFilter);
-}
+};
 
-const locationsAfterSortAndFilter = (locations, sortMethod, categoryFilter) => {
+const sortAndFilterLocations = (locations, sortMethod, categoryFilter) => {
     const filteredLocations = filterLocations(locations, categoryFilter);
     if (sortMethod) {
         return sortedByCategory(filteredLocations, sortMethod);
     }
+
     return sortedByName(filteredLocations);
-}
+};
 
-const SortableLocationRows =({locations, sortByCategory, categoryFilter, onClick, selectedLocation}) => {
-    return (
-        <LocationRows
-            locations={locationsAfterSortAndFilter(locations, sortByCategory, categoryFilter)}
-            selectedLocation={selectedLocation}
-            onClick={onClick}
-        />
-    );
-}
-
-export default SortableLocationRows;
+export default sortAndFilterLocations;

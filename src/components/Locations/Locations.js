@@ -4,7 +4,8 @@ import { Table, Glyphicon } from 'react-bootstrap';
 import LocationsNavbar from './LocationsNavbar';
 import LocationFormModal from './LocationFormModal';
 import CategoryFilter from './CategoryFilter';
-import SortableLocationsRows from './SortableLocationsRows';
+import sortAndFilterLocations from './sortAndFilterLocations';
+import LocationRows from './LocationRows';
 import './Locations.css';
 
 import vibrate from '../../vibrate';
@@ -172,6 +173,12 @@ export default class Locations extends Component {
     }
 
     render() {
+        const filteredSortedLocations = sortAndFilterLocations(
+            this.props.locations,
+            this.state.sortByCategory,
+            this.props.categoryFilter
+        );
+
         return (
             <div>
                 <LocationsNavbar
@@ -207,10 +214,8 @@ export default class Locations extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            <SortableLocationsRows
-                                locations={this.props.locations}
-                                sortByCategory={this.state.sortByCategory}
-                                categoryFilter={this.props.categoryFilter}
+                            <LocationRows
+                                locations={filteredSortedLocations}
                                 onClick={loc => this.select(loc)}
                                 selectedLocation={this.props.selectedLocation}
                             />
@@ -219,7 +224,7 @@ export default class Locations extends Component {
                 </div>
 
                 <LocationsMap
-                    locations={this.props.locations}
+                    locations={filteredSortedLocations}
                     selectedLocation={this.props.selectedLocation}
                     locationInfoClosed={() => this.deselect()}
                     mapRef={map => this.map = map}
