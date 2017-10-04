@@ -2,10 +2,11 @@ import React from 'react';
 
 import { compose, withProps } from 'recompose';
 import { withScriptjs, withGoogleMap, GoogleMap } from 'react-google-maps';
+import { GOOGLE_MAPS_API_KEY } from '../../constants';
 
 const Map = compose(
   withProps({
-    googleMapURL: 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCxOXDhf6CAQsPQC7MHxazygFIxjTAFYsE',
+    googleMapURL: `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${GOOGLE_MAPS_API_KEY}`,
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `400px` }} className="container"/>,
     mapElement: <div style={{ height: `100%` }} />,

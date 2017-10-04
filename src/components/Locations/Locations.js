@@ -8,6 +8,7 @@ import LocationsTable from './LocationsTable';
 
 import sortAndFilterLocations from './sortAndFilterLocations';
 import vibrate from '../../vibrate';
+import { addressByCoordinates } from '../Map';
 
 import './Locations.css';
 
@@ -32,7 +33,8 @@ export default class Locations extends Component {
             adding: false,
             editing: false,
             sortByCategory: null,
-            additionCoordinate: null
+            additionCoordinate: null,
+            additionCoordinateAddress: null
         };
     }
 
@@ -105,6 +107,7 @@ export default class Locations extends Component {
                 onClose={() => this.closeAddDialog()}
                 onSubmit={onSubmit}
                 defaultCoordinates={defaultCoodinate}
+                defaultAddress={this.state.additionCoordinateAddress}
             />
         );
     }
@@ -151,7 +154,13 @@ export default class Locations extends Component {
             lat: e.latLng.lat(),
             long: e.latLng.lng()
         };
-        this.setState({additionCoordinate: coordinates});
+        addressByCoordinates(coordinates)
+            .then(address => {
+                this.setState({
+                    additionCoordinate: coordinates,
+                    additionCoordinateAddress: address
+                });
+            })
     }
 
     onAddFromMap() {
@@ -159,7 +168,7 @@ export default class Locations extends Component {
     }
 
     resetAdditionCoordinate() {
-        this.setState({additionCoordinate: null});        
+        this.setState({additionCoordinate: null, additionCoordinateAddress: null});        
     }
 
     render() {
@@ -208,6 +217,7 @@ export default class Locations extends Component {
                     onRightClick={e => this.onMapRightClick(e)}
                     locationClicked={loc => this.selectFromMap(loc)}
                     additionCoordinate={this.state.additionCoordinate}
+                    additionCoordinateAddress={this.state.additionCoordinateAddress}
                     onAdditionClick={() => this.onAddFromMap()}
                     onAdditionCancel={() => this.resetAdditionCoordinate() }
                 />

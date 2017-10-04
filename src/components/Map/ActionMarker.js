@@ -4,13 +4,16 @@ import { Marker, InfoWindow } from 'react-google-maps';
 import { toGoogleMapsCoordinates } from './LocationMarker';
 import { Button } from 'react-bootstrap';
 
-const ActionMarker = ({coordinates, title, onClick, onCloseClick}) => {
+const ActionMarker = ({coordinates, description, action, onClick, onCloseClick}) => {
     return (
         <Marker position={toGoogleMapsCoordinates(coordinates)}>
             <InfoWindow onCloseClick={onCloseClick}>
-                <Button onClick={onClick}>
-                    {title}
-                </Button>
+                <div>
+                    {description}
+                    <Button onClick={onClick}>
+                        {action}
+                    </Button>
+                </div>
             </InfoWindow>
         </Marker>
     );

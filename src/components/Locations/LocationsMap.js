@@ -9,6 +9,7 @@ const LocationsMap = ({
     onRightClick,
     locationClicked,
     additionCoordinate,
+    additionCoordinateAddress,
     onAdditionClick,
     onAdditionCancel,
     locationInfoClosed
@@ -23,7 +24,13 @@ const LocationsMap = ({
                 coordinates={additionCoordinate}
                 onClick={onAdditionClick}
                 onCloseClick={onAdditionCancel}
-                title={`Add Location at ${additionCoordinate.lat}, ${additionCoordinate.long}`}
+                description={
+                    <div>
+                        { additionCoordinateAddress && <div><b>Address:</b> {additionCoordinateAddress}</div> }
+                        <div><b>Coordinates:</b> {`${additionCoordinate.lat}, ${additionCoordinate.long}`}</div>
+                    </div>
+                }
+                action="Add"
             />
         }
         {
