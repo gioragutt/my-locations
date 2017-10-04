@@ -1,16 +1,26 @@
 import React from 'react';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import logger from 'redux-logger'
+
+import { createBrowserHistory } from 'history'
+import { routerMiddleware, connectRouter } from 'connected-react-router'
 
 import rootReducer from './reducers/root';
 import * as myLocationsStorage from './storage';
 import { initializeCategories } from './actions/categories';
 import { initializeLocations } from './actions/locations';
 
+export const history = createBrowserHistory();
+
 const store = createStore(
-    rootReducer,
-    applyMiddleware(logger)
+    connectRouter(history)(rootReducer),
+    compose(
+        applyMiddleware(
+            routerMiddleware(history),
+            logger
+        )
+    )
 );
 
 store.subscribe(() => {

@@ -4,7 +4,7 @@ import './index.css';
 import App from './components/App/App';
 import registerServiceWorker from './registerServiceWorker';
 
-import MyLocationsStoreProvider from './store';
+import MyLocationsStoreProvider, { history } from './store';
 
 // THIS SHOULD DEFINITLY NOT BE HERE
 // THIS IS A WORKAROUND FOR REACT16 DESTROYING BOOTSTRAP's MODAL
@@ -17,7 +17,7 @@ Modal.prototype.componentWillMount = function () {
 
 ReactDOM.render(
     <MyLocationsStoreProvider>
-        <App />
+        <App history={history}/>
     </MyLocationsStoreProvider>,
     document.getElementById('root')
 );
