@@ -6,6 +6,8 @@ import {
     LOCATIONS_INIT
 } from '../actions/locations';
 
+import { CATEGORIES_EDIT } from '../actions/categories';
+
 import * as uuid from 'uuid';
 import { load } from '../storage';
 
@@ -40,6 +42,18 @@ const createNewLocation = (state, location) => {
     };
 }
 
+const updateCategoryNameChange = (state, {oldCategory, newCategory}) => {
+    return {
+        ...state,
+        items: state.items.map(loc => {
+            if (loc.category !== oldCategory) {
+                return loc;
+            }
+            return {...loc, category: newCategory};
+        })
+    }
+}
+
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case LOCATIONS_INIT:
@@ -61,6 +75,8 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 selected: validateSelectedExists(state, action.payload)
             }
+        case CATEGORIES_EDIT:
+            return updateCategoryNameChange(state, action.payload);
         default:
             return state;
     }
