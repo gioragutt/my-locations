@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Form, FormGroup, Col, FormControl, ControlLabel } from 'react-bootstrap';
+import { Form, FormGroup, Col, FormControl, ControlLabel, Button } from 'react-bootstrap';
 
 import { isLatitudeValid, isLongitudeValid } from '../../models/location';
 
@@ -133,6 +133,7 @@ export default class LocationForm extends Component {
                         value={coordinates.long}
                     />
                 </FormRow>
+                <Button type="submit" style={{opacity: 0}}/>
             </Form>
         )
     }

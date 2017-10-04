@@ -32,7 +32,7 @@ export default class LocationFormModal extends Component {
                 location={this.state}
                 categories={this.props.categories}
                 locationChanged={location => this.setState(location)}
-                onSubmit={this.props.onSubmit}
+                onSubmit={() => this.handleSubmit()}
             />
         );
     }
