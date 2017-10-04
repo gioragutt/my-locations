@@ -1,12 +1,12 @@
 import React from 'react';
 import { Marker, InfoWindow } from 'react-google-maps'
 
-const toGoogleMapsCoordinates = coordinates => ({ lat: coordinates.lat, lng: coordinates.long });
+export const toGoogleMapsCoordinates = coordinates => ({ lat: coordinates.lat, lng: coordinates.long });
 
 const InfoRow = ({title, value}) => <div><b>{title}:</b> {value}</div>;
 
-const LocationInfoWindow = ({location}) => (
-    <InfoWindow>
+const LocationInfoWindow = ({location, onCloseClick}) => (
+    <InfoWindow onCloseClick={onCloseClick}>
         <div>
             <InfoRow title="Name" value={location.name} />
             <InfoRow title="Address" value={location.address} />
@@ -16,14 +16,14 @@ const LocationInfoWindow = ({location}) => (
     </InfoWindow>
 );
 
-const LocationMarker = ({location, onClick, isSelected}) => {
+const LocationMarker = ({location, onClick, isSelected, onCloseClick}) => {
     return (
         <Marker
             position={toGoogleMapsCoordinates(location.coordinates)}
             label={location.name}
             onClick={() => onClick(location)}
         >
-            {isSelected && <LocationInfoWindow location={location}/>}
+            {isSelected && <LocationInfoWindow location={location} onCloseClick={onCloseClick}/>}
         </Marker>
     );
 };

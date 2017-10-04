@@ -12,11 +12,12 @@ const Map = compose(
   }),
   withScriptjs,
   withGoogleMap
-)(({children, defaultZoom = 8, defaultCenter = { lat: 33, lng: 33 }, mapRef}) => (
+)(({children, defaultZoom = 8, defaultCenter = { lat: 33, lng: 33 }, mapRef, ...props}) => (
   <GoogleMap
     ref={mapRef}
     defaultZoom={defaultZoom}
     defaultCenter={defaultCenter}
+    {...props}
   >
     {children}
   </GoogleMap>

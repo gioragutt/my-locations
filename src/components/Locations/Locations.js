@@ -8,7 +8,7 @@ import SortableLocationsRows from './SortableLocationsRows';
 import './Locations.css';
 
 import vibrate from '../../vibrate';
-import { Map, LocationMarker } from '../Map';
+import LocationsMap from './LocationsMap';
 
 const SortGlyph = ({sort}) => {
     if (sort === 'asc') {
@@ -40,7 +40,8 @@ export default class Locations extends Component {
         this.state = {
             adding: false,
             editing: false,
-            sortByCategory: null
+            sortByCategory: null,
+            additionCoordinate: null
         };
     }
 
@@ -99,11 +100,20 @@ export default class Locations extends Component {
             return;
         }
 
+        const defaultCoodinate = this.state.additionCoordinate ? {...this.state.additionCoordinate} : null;
+        const onSubmit = loc => {
+            this.addLocation(loc);
+            if (defaultCoodinate) {
+                this.resetAdditionCoordinate();
+            }
+        }
+
         return (
             <LocationFormModal
                 categories={this.props.categories}
                 onClose={() => this.closeAddDialog()}
-                onSubmit={loc => this.addLocation(loc)}
+                onSubmit={onSubmit}
+                defaultCoordinates={defaultCoodinate}
             />
         );
     }
@@ -143,6 +153,22 @@ export default class Locations extends Component {
     toggleCategorySort() {
         const sortByCategory = toggleSortByCategory(this.state.sortByCategory);
         this.setState({sortByCategory});
+    }
+
+    onMapRightClick(e) {
+        const coordinates = {
+            lat: e.latLng.lat(),
+            long: e.latLng.lng()
+        };
+        this.setState({additionCoordinate: coordinates});
+    }
+
+    onAddFromMap() {
+        this.openAddDialog();
+    }
+
+    resetAdditionCoordinate() {
+        this.setState({additionCoordinate: null});        
     }
 
     render() {
@@ -191,17 +217,17 @@ export default class Locations extends Component {
                     </Table>
                 </div>
 
-                <Map mapRef={map => { this.map = map; console.log('map', map)}}>
-                    {
-                        this.props.locations.map(loc => (
-                            <LocationMarker
-                                key={loc.id}
-                                location={loc}
-                                onClick={loc => this.selectFromMap(loc)}
-                                isSelected={this.props.selectedLocation && loc.id === this.props.selectedLocation.id}
-                            />))
-                    }
-                </Map>
+                <LocationsMap
+                    locations={this.props.locations}
+                    selectedLocation={this.props.selectedLocation}
+                    locationInfoClosed={() => this.deselect()}
+                    mapRef={map => this.map = map}
+                    onRightClick={e => this.onMapRightClick(e)}
+                    locationClicked={loc => this.selectFromMap(loc)}
+                    additionCoordinate={this.state.additionCoordinate}
+                    onAdditionClick={() => this.onAddFromMap()}
+                    onAdditionCancel={() => this.resetAdditionCoordinate() }
+                />
             </div>
         )
     }
