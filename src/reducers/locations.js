@@ -6,15 +6,13 @@ import {
 } from '../actions/locations';
 
 import * as uuid from 'uuid';
+import { load } from '../storage';
 
-import Location from '../models/location';
+const { locations } = load(); 
 
 const INITIAL_STATE = {
     selected: null,
-    items: [
-        new Location(uuid(), 'Location1', 'Address1', {lat: 33, long: 33}, 'cat1'),
-        new Location(uuid(), 'Location2', 'Address2', {lat: 33, long: 34}, 'cat2'),
-    ]
+    items: locations || []
 };
 
 const editLocation = (state, {oldLocationId, newLocation}) => {
@@ -42,6 +40,7 @@ const createNewLocation = (state, location) => {
 }
 
 export default (state = INITIAL_STATE, action) => {
+
     switch (action.type) {
         case LOCATIONS_ADD:
             return createNewLocation(state, action.payload);

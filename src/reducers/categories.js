@@ -5,12 +5,13 @@ import {
     CATEGORIES_SELECT
 } from '../actions/categories';
 
+import { load } from '../storage';
+
+const { categories } = load(); 
+
 const INITIAL_STATE = {
     selected: '',
-    items: [
-        'cat1',
-        'cat2'
-    ]
+    items: categories || []
 };
 
 const editCategory = (state, {oldCategory, newCategory}) => {
