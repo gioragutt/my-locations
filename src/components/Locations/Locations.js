@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { Table, Glyphicon } from 'react-bootstrap';
 import LocationsNavbar from './LocationsNavbar';
 import LocationFormModal from './LocationFormModal';
-
+import CategoryFilter from './CategoryFilter';
+import SortableLocationsRows from './SortableLocationsRows';
 import './Locations.css';
 
 const SortGlyph = ({sort}) => {
@@ -14,6 +15,19 @@ const SortGlyph = ({sort}) => {
     }
 
     return null;
+}
+
+const toggleSortByCategory = (sortByCategory) => {
+    switch (sortByCategory) {
+        case null:
+            return 'asc';
+        case 'asc':
+            return 'dsc';
+        case 'dsc':
+            return null;
+        default:
+            return null;
+    }
 }
 
 export default class Locations extends Component {
@@ -108,67 +122,9 @@ export default class Locations extends Component {
         this.props.removeLocation(selectedLocation);
     }
 
-    renderRow(location) {
-        const { selectedLocation } = this.props;
-        const rowSelected = selectedLocation && selectedLocation.id === location.id;
-        return (
-            <tr className={rowSelected ? 'bg-primary' : ''}
-                onClick={() => this.select(location)}
-                key={location.id}>
-                <td>{location.name}</td>
-                <td>{location.address}</td>
-                <td>{location.category}</td>
-                <td>{location.coordinates.lat}</td>
-                <td>{location.coordinates.long}</td>
-            </tr>
-        );
-    }
-
     toggleCategorySort() {
-        const sortByCategory = (() => {
-            switch (this.state.sortByCategory) {
-                case null:
-                    return 'asc';
-                case 'asc':
-                    return 'dsc';
-                case 'dsc':
-                    return null;
-                default:
-                    return null;
-            }
-        })();
+        const sortByCategory = toggleSortByCategory(this.state.sortByCategory);
         this.setState({sortByCategory});
-    }
-
-    sortByCategory() {
-        const { sortByCategory: sortMethod } = this.state;
-        const sort = pred => 
-            this.sortedLocations(this.props.locations)
-                .sort((first, second) => pred(first.category.toLowerCase(), second.category.toLowerCase()));
-                
-        switch (sortMethod) {
-            case null: return [];
-            case 'asc': return sort((a, b) => a < b);
-            case 'dsc': return sort((a, b) => a > b);
-            default: return []
-        }
-    }
-
-    sortedLocations(locations) {
-        return locations.slice().sort((first, second) => 
-            first.name.toLowerCase() > second.name.toLowerCase())
-    }
-
-    locationsList() {
-        if (this.state.sortByCategory) {
-            return this.sortByCategory();
-        }
-        
-        return this.sortedLocations(this.props.locations);
-    }
-
-    renderRows() {
-        return this.locationsList().map(loc => this.renderRow(loc));
     }
 
     render() {
@@ -180,8 +136,17 @@ export default class Locations extends Component {
                     onRemove={() => this.removeSelectedCategory()}
                     onEdit={() => this.openEditDialog()} 
                 />
+
+                <CategoryFilter
+                    onChange={this.props.setCategoryFilter}
+                    resetFilter={this.props.resetCategoryFilter}
+                    value={this.props.categoryFilter}
+                    availableCategories={this.props.categories}
+                />
+                
                 {this.renderAddForm()}
                 {this.renderEditForm()}
+                
                 <div className="container locations-table">
                     <Table responsive>
                         <thead>
@@ -197,7 +162,13 @@ export default class Locations extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.renderRows()}
+                            <SortableLocationsRows
+                                locations={this.props.locations}
+                                sortByCategory={this.state.sortByCategory}
+                                categoryFilter={this.props.categoryFilter}
+                                onClick={loc => this.select(loc)}
+                                selectedLocation={this.props.selectedLocation}
+                            />
                         </tbody>
                     </Table>
                 </div>

@@ -1,18 +1,31 @@
 import { connect } from 'react-redux'
 import Locations from '../components/Locations/Locations'
-import { selectLocation, removeLocation, addLocation, editLocation } from '../actions/locations'
+import {
+    selectLocation,
+    removeLocation,
+    addLocation,
+    editLocation
+} from '../actions/locations'
+
+import {
+    setCategoryFilter,
+    resetCategoryFilter
+} from '../actions/categories';
 
 const mapStateToProps = (state, ownProps) => ({
     locations: state.locations.items,
     selectedLocation: state.locations.selected,
-    categories: state.categories.items
+    categories: state.categories.items,
+    categoryFilter: state.categories.filter
 });
 
 const mapDispatchToProps = {
     selectLocation,
     removeLocation,
     addLocation,
-    editLocation
+    editLocation,
+    setCategoryFilter,
+    resetCategoryFilter
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Locations)

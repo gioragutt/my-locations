@@ -3,11 +3,13 @@ import {
     CATEGORIES_EDIT,
     CATEGORIES_REMOVE,
     CATEGORIES_SELECT,
-    CATEGORIES_INIT
+    CATEGORIES_INIT,
+    CATEGORIES_SET_FILTER
 } from '../actions/categories';
 
 const INITIAL_STATE = {
     selected: '',
+    filter: '',
     items: []
 };
 
@@ -55,6 +57,11 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 selected: validateSelectedExists(state, action.payload)
+            }
+        case CATEGORIES_SET_FILTER:
+            return {
+                ...state,
+                filter: action.payload || ''
             }
         default:
             return state;

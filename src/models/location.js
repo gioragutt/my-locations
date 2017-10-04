@@ -16,13 +16,3 @@ export const isLocationValid = (location, availableCategories) =>
     availableCategories.includes(location.category) &&
     isLatitudeValid(location.coordinates.lat) &&
     isLongitudeValid(location.coordinates.long);
-
-export default class Location {
-    constructor(id, name, address, {lat, long}, category) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.coordinates = {lat, long};
-        this.category = category;
-    }
-}
