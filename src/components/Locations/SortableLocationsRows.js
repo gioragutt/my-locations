@@ -24,7 +24,6 @@ const sortedByCategory = (locations, sortMethod) => {
 }
 
 const filterLocations = (locations, categoryFilter) => {
-    console.log('Category filter', categoryFilter)
     if (!categoryFilter) {
         return locations;
     }

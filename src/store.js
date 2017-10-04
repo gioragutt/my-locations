@@ -27,7 +27,6 @@ const store = createStore(
 
 store.subscribe(() => {
     const state = store.getState();
-    console.log('saving', state, 'to local storage');
     myLocationsStorage.save(state);
 });
 
