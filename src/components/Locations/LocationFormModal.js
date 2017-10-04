@@ -5,11 +5,11 @@ import LocationForm from './LocationForm';
 
 import { isLocationValid } from '../../models/location';
 
-const emptyLocation = (category) => ({
+const emptyLocation = (category, defaultCoordinates) => ({
     name: '',
     address: '',
     category,
-    coordinates: {lat: 33, long: 33}
+    coordinates: defaultCoordinates || {lat: 33, long: 33}
 });
 
 export default class LocationFormModal extends Component {
@@ -17,7 +17,7 @@ export default class LocationFormModal extends Component {
     constructor(props) {
         super(props);
 
-        this.state = props.location ? {...props.location} : emptyLocation(this.props.categories[0]);
+        this.state = props.location ? {...props.location} : emptyLocation(this.props.categories[0], props.defaultCoordinates);
     }
 
     inputValid() {
