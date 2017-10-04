@@ -6,7 +6,10 @@ import {
     LOCATIONS_INIT
 } from '../actions/locations';
 
-import { CATEGORIES_EDIT } from '../actions/categories';
+import {
+    CATEGORIES_EDIT,
+    CATEGORIES_REMOVE
+} from '../actions/categories';
 
 import * as uuid from 'uuid';
 import { load } from '../storage';
@@ -54,6 +57,18 @@ const updateCategoryNameChange = (state, {oldCategory, newCategory}) => {
     }
 }
 
+const invalidateLocationsRelatedToDeletedCategory = (state, category) => {
+    return {
+        ...state,
+        items: state.items.map(loc => {
+            if (loc.category !== category) {
+                return loc;
+            }
+            return {...loc, category: null};
+        })
+    }
+}
+
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case LOCATIONS_INIT:
@@ -77,6 +92,8 @@ export default (state = INITIAL_STATE, action) => {
             }
         case CATEGORIES_EDIT:
             return updateCategoryNameChange(state, action.payload);
+        case CATEGORIES_REMOVE:
+            return invalidateLocationsRelatedToDeletedCategory(state, action.payload);
         default:
             return state;
     }

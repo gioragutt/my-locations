@@ -17,9 +17,28 @@ const FormRow = ({children, title, validationState}) => (
 
 const toValidationState = predicate => predicate ? 'success' : 'error';
 
+const validateCategory = (category, categories) => {
+    if (category) {
+        return category;
+    }
+
+    if (categories.length > 0) {
+        return categories[0];
+    }
+
+    return '';
+}
+
 export default class LocationForm extends Component {
     constructor(props) {
         super(props);
+
+        const { location } = props;
+
+        if (!location.category) {
+            location.category = validateCategory(location.category, props.categories);
+            props.locationChanged(location);
+        }
 
         this.state = props.location;
     }

@@ -1,7 +1,16 @@
 import React from 'react'
 
+const locationRowClasses = (isSelected, categoryInvalid) => {
+    if (isSelected) {
+        return 'bg-primary';
+    } else if (categoryInvalid) {
+        return 'bg-danger';
+    }
+    return null;
+}
+
 const Row = ({location, isSelected, onClick}) => (
-    <tr className={isSelected ? 'bg-primary' : ''}
+    <tr className={locationRowClasses(isSelected, !location.category)}
         onClick={() => onClick(location)}
     >
         <td>{location.name}</td>
