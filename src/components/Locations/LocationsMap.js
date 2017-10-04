@@ -12,11 +12,13 @@ const LocationsMap = ({
     additionCoordinateAddress,
     onAdditionClick,
     onAdditionCancel,
-    locationInfoClosed
+    locationInfoClosed,
+    ...props
 }) => (
     <Map
         mapRef={mapRef}
         onRightClick={onRightClick}
+        {...props}
     >
         { 
             additionCoordinate &&

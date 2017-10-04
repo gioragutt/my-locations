@@ -210,6 +210,7 @@ export default class Locations extends Component {
                 }
 
                 <LocationsMap
+                    onClick={() => this.deselect()}
                     locations={filteredSortedLocations}
                     selectedLocation={this.props.selectedLocation}
                     locationInfoClosed={() => this.deselect()}
