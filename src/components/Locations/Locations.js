@@ -1,25 +1,15 @@
 import React, { Component } from 'react';
 
-import { Table, Glyphicon } from 'react-bootstrap';
 import LocationsNavbar from './LocationsNavbar';
 import LocationFormModal from './LocationFormModal';
 import CategoryFilter from './CategoryFilter';
-import sortAndFilterLocations from './sortAndFilterLocations';
-import LocationRows from './LocationRows';
-import './Locations.css';
-
-import vibrate from '../../vibrate';
 import LocationsMap from './LocationsMap';
+import LocationsTable from './LocationsTable';
 
-const SortGlyph = ({sort}) => {
-    if (sort === 'asc') {
-        return <span>{' '}<Glyphicon glyph="chevron-up"/></span>
-    } else if (sort === 'dsc') {
-        return <span>{' '}<Glyphicon glyph="chevron-down"/></span>
-    }
+import sortAndFilterLocations from './sortAndFilterLocations';
+import vibrate from '../../vibrate';
 
-    return null;
-}
+import './Locations.css';
 
 const toggleSortByCategory = (sortByCategory) => {
     switch (sortByCategory) {
@@ -187,7 +177,7 @@ export default class Locations extends Component {
                     onRemove={() => this.removeSelectedCategory()}
                     onEdit={() => this.openEditDialog()} 
                 />
-                <div className="category-filter">
+                <div className="category-filter fill-navbar-space">
                     <CategoryFilter
                         onChange={this.props.setCategoryFilter}
                         resetFilter={this.props.resetCategoryFilter}
@@ -199,29 +189,16 @@ export default class Locations extends Component {
                 {this.renderAddForm()}
                 {this.renderEditForm()}
                 
-                <div className="container locations-table">
-                    <Table responsive>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Address</th>
-                                <th className="sortable" onClick={() => this.toggleCategorySort()}>
-                                    Category
-                                    <SortGlyph sort={this.state.sortByCategory} />
-                                </th>
-                                <th>Latitude</th>
-                                <th>Longitude</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <LocationRows
-                                locations={filteredSortedLocations}
-                                onClick={loc => this.select(loc)}
-                                selectedLocation={this.props.selectedLocation}
-                            />
-                        </tbody>
-                    </Table>
-                </div>
+                { filteredSortedLocations.length > 0
+                    ? <LocationsTable
+                        locations={filteredSortedLocations}
+                        locationSelected={loc => this.select(loc)}
+                        selectedLocation={this.props.selectedLocation}
+                        sortByCategory={this.state.sortByCategory}
+                        toggleCategorySort={() => this.toggleCategorySort()}
+                    />
+                    : <h3>No locations to show</h3>
+                }
 
                 <LocationsMap
                     locations={filteredSortedLocations}

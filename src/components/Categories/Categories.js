@@ -100,6 +100,8 @@ export default class Categories extends Component {
 
     render() {
         const { categories } = this.props;
+        const thereAreCategories = categories.length > 0;
+        
         return (
             <div>
                 <CategoriesNavbar
@@ -110,10 +112,14 @@ export default class Categories extends Component {
                 />
                 {this.renderAddForm()}
                 {this.renderEditForm()}
-                <div className="container">
-                    <ListGroup>
-                        {this.renderCategoryList(categories)}
-                    </ListGroup>
+                <div className="container fill-navbar-space">
+                    {
+                        thereAreCategories 
+                        ? <ListGroup>
+                            {this.renderCategoryList(categories)}
+                        </ListGroup>
+                        : <h3>No categories to show</h3> 
+                    }
                 </div>
             </div>
         )
