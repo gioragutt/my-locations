@@ -11,6 +11,7 @@ const FormRow = ({children, title, validationState}) => (
         </Col>
         <Col sm={10}>
             {children}
+            <FormControl.Feedback />
         </Col>
     </FormGroup>
 );
