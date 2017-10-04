@@ -21,7 +21,7 @@ export default class LocationFormModal extends Component {
     }
 
     inputValid() {
-        return isLocationValid(this.state, this.props.categories);
+        return this.props.categories.length > 0 && isLocationValid(this.state, this.props.categories);
     }
 
     renderForm() {

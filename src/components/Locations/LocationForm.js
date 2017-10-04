@@ -25,9 +25,14 @@ export default class LocationForm extends Component {
     }
 
     renderCategoryOptions() {
+        const { categories } = this.props;
+        if (categories.length === 0) {
+            return <option value={null}>You must first create a category!</option>
+        }
+
         return this.props.categories.map(cat =>
             <option value={cat} key={cat}>{cat}</option>            
-        )
+        );
     }
 
     handleChange(change) {
@@ -82,7 +87,7 @@ export default class LocationForm extends Component {
                         value={address}
                     />
                 </FormRow>
-                <FormRow title="Category">
+                <FormRow title="Category" validationState={toValidationState(this.props.categories.length > 0)}>
                     <FormControl
                         componentClass="select"
                         placeholder="Category"
