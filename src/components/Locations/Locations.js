@@ -171,6 +171,11 @@ export default class Locations extends Component {
         this.setState({additionCoordinate: null, additionCoordinateAddress: null});        
     }
 
+    onMapClick() {
+        this.deselect();
+        this.resetAdditionCoordinate();
+    }
+
     render() {
         const filteredSortedLocations = sortAndFilterLocations(
             this.props.locations,
@@ -210,7 +215,7 @@ export default class Locations extends Component {
                 }
 
                 <LocationsMap
-                    onClick={() => this.deselect()}
+                    onClick={() => this.onMapClick()}
                     locations={filteredSortedLocations}
                     selectedLocation={this.props.selectedLocation}
                     locationInfoClosed={() => this.deselect()}
