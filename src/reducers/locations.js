@@ -2,7 +2,8 @@ import {
     LOCATIONS_ADD,
     LOCATIONS_EDIT,
     LOCATIONS_REMOVE,
-    LOCATIONS_SELECT
+    LOCATIONS_SELECT,
+    LOCATIONS_INIT
 } from '../actions/locations';
 
 import * as uuid from 'uuid';
@@ -40,8 +41,12 @@ const createNewLocation = (state, location) => {
 }
 
 export default (state = INITIAL_STATE, action) => {
-
     switch (action.type) {
+        case LOCATIONS_INIT:
+            return {
+                ...state,
+                items: action.payload
+            };
         case LOCATIONS_ADD:
             return createNewLocation(state, action.payload);
         case LOCATIONS_EDIT:

@@ -2,16 +2,13 @@ import {
     CATEGORIES_ADD,
     CATEGORIES_EDIT,
     CATEGORIES_REMOVE,
-    CATEGORIES_SELECT
+    CATEGORIES_SELECT,
+    CATEGORIES_INIT
 } from '../actions/categories';
-
-import { load } from '../storage';
-
-const { categories } = load(); 
 
 const INITIAL_STATE = {
     selected: '',
-    items: categories || []
+    items: []
 };
 
 const editCategory = (state, {oldCategory, newCategory}) => {
@@ -40,6 +37,11 @@ const addCategory = (state, category) => {
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
+        case CATEGORIES_INIT:
+            return {
+                ...state,
+                items: action.payload
+            };
         case CATEGORIES_ADD:
             return addCategory(state, action.payload);
         case CATEGORIES_EDIT:
