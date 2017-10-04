@@ -7,6 +7,8 @@ import CategoryFilter from './CategoryFilter';
 import SortableLocationsRows from './SortableLocationsRows';
 import './Locations.css';
 
+import { Map, LocationMarker } from '../Map';
+
 const SortGlyph = ({sort}) => {
     if (sort === 'asc') {
         return <span>{' '}<Glyphicon glyph="chevron-up"/></span>
@@ -62,13 +64,27 @@ export default class Locations extends Component {
         this.props.selectLocation(null);
     }
 
-    select(location) {
+    toggleSelect(location, onSelect = () => {}) {
         const { selectedLocation: selected } = this.props;
         if (selected && location.id === selected.id) {
             this.deselect();
         } else {
             this.props.selectLocation(location);
+            onSelect(location);
         }
+    }
+
+    select(location) {
+        this.toggleSelect(location, loc => {
+            this.map.panTo({
+                lat: loc.coordinates.lat,
+                lng: loc.coordinates.long
+            });
+        })
+    }
+
+    selectFromMap(location) {
+        this.toggleSelect(location);
     }
 
     addLocation(location) {
@@ -172,6 +188,18 @@ export default class Locations extends Component {
                         </tbody>
                     </Table>
                 </div>
+
+                <Map mapRef={map => { this.map = map; console.log('map', map)}}>
+                    {
+                        this.props.locations.map(loc => (
+                            <LocationMarker
+                                key={loc.id}
+                                location={loc}
+                                onClick={loc => this.selectFromMap(loc)}
+                                isSelected={this.props.selectedLocation && loc.id === this.props.selectedLocation.id}
+                            />))
+                    }
+                </Map>
             </div>
         )
     }
