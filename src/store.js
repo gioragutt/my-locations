@@ -32,8 +32,8 @@ store.subscribe(() => {
 });
 
 const { categories, locations } = myLocationsStorage.load();
-store.dispatch(initializeCategories(categories));
-store.dispatch(initializeLocations(locations));
+store.dispatch(initializeCategories(categories || []));
+store.dispatch(initializeLocations(locations || []));
 
 const MyLocationsStoreProvider = ({children}) => (
     <Provider store={store}>
