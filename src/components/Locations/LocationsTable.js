@@ -19,11 +19,11 @@ const LocationsTable = ({locations, selectedLocation, sortByCategory, locationSe
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Address</th>
                     <th className="sortable" onClick={toggleCategorySort}>
                         Category
                         <SortGlyph sort={sortByCategory} />
                     </th>
+                    <th>Address</th>
                     <th>Latitude</th>
                     <th>Longitude</th>
                 </tr>

@@ -14,8 +14,8 @@ const Row = ({location, isSelected, onClick}) => (
         onClick={() => onClick(location)}
     >
         <td>{location.name}</td>
-        <td>{location.address}</td>
         <td>{location.category}</td>
+        <td>{location.address}</td>
         <td>{location.coordinates.lat}</td>
         <td>{location.coordinates.long}</td>
     </tr>
