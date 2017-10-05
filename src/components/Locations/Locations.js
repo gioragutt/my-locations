@@ -227,6 +227,7 @@ export default class Locations extends Component {
                     onAdditionClick={() => this.onAddFromMap()}
                     onAdditionCancel={() => this.resetAdditionCoordinate() }
                 />
+                <div style={{height: `70px`}}/>
             </div>
         )
     }
