@@ -8,7 +8,6 @@ import LocationsTable from './LocationsTable';
 
 import sortAndFilterLocations from './sortAndFilterLocations';
 import vibrate from '../../vibrate';
-import { addressByCoordinates } from '../Map';
 
 import './Locations.css';
 
@@ -32,9 +31,7 @@ export default class Locations extends Component {
         this.state = {
             adding: false,
             editing: false,
-            sortByCategory: null,
-            additionCoordinate: null,
-            additionCoordinateAddress: null
+            sortByCategory: null
         };
     }
 
@@ -70,16 +67,11 @@ export default class Locations extends Component {
     }
 
     select(location) {
-        this.toggleSelect(location, loc => {
-            this.map.panTo({
-                lat: loc.coordinates.lat,
-                lng: loc.coordinates.long
-            });
-        })
+        this.toggleSelect(location, loc => this.map.panTo(loc.coordinates));
     }
 
     selectFromMap(location) {
-        this.toggleSelect(location);
+        this.select(location);
         vibrate(100);
     }
 
@@ -88,16 +80,22 @@ export default class Locations extends Component {
         this.props.addLocation(location);
     }
 
+    getMapRef(map) {
+        if (!this.map) {
+            this.map = map;
+        }
+    }
+
     renderAddForm() {
         if (!this.state.adding) {
             return;
         }
 
-        const defaultCoodinate = this.state.additionCoordinate ? {...this.state.additionCoordinate} : null;
+        const additionData = this.map.additionData();
         const onSubmit = loc => {
             this.addLocation(loc);
-            if (defaultCoodinate) {
-                this.resetAdditionCoordinate();
+            if (additionData.coordinates) {
+                this.map.resetAddition();
             }
         }
 
@@ -106,8 +104,8 @@ export default class Locations extends Component {
                 categories={this.props.categories}
                 onClose={() => this.closeAddDialog()}
                 onSubmit={onSubmit}
-                defaultCoordinates={defaultCoodinate}
-                defaultAddress={this.state.additionCoordinateAddress}
+                defaultCoordinates={additionData.coordinates}
+                defaultAddress={additionData.address}
             />
         );
     }
@@ -149,31 +147,13 @@ export default class Locations extends Component {
         this.setState({sortByCategory});
     }
 
-    onMapRightClick(e) {
-        const coordinates = {
-            lat: e.latLng.lat(),
-            long: e.latLng.lng()
-        };
-        addressByCoordinates(coordinates)
-            .then(address => {
-                this.setState({
-                    additionCoordinate: coordinates,
-                    additionCoordinateAddress: address
-                });
-            })
-    }
-
     onAddFromMap() {
         this.openAddDialog();
     }
 
-    resetAdditionCoordinate() {
-        this.setState({additionCoordinate: null, additionCoordinateAddress: null});        
-    }
-
     onMapClick() {
         this.deselect();
-        this.resetAdditionCoordinate();
+        this.map.resetAddition();
     }
 
     render() {
@@ -219,13 +199,10 @@ export default class Locations extends Component {
                     locations={filteredSortedLocations}
                     selectedLocation={this.props.selectedLocation}
                     locationInfoClosed={() => this.deselect()}
-                    mapRef={map => this.map = map}
-                    onRightClick={e => this.onMapRightClick(e)}
+                    ref={map => this.getMapRef(map)}
+                    onRightClick={() => this.deselect()}
                     locationClicked={loc => this.selectFromMap(loc)}
-                    additionCoordinate={this.state.additionCoordinate}
-                    additionCoordinateAddress={this.state.additionCoordinateAddress}
                     onAdditionClick={() => this.onAddFromMap()}
-                    onAdditionCancel={() => this.resetAdditionCoordinate() }
                 />
                 <div style={{height: `70px`}}/>
             </div>
