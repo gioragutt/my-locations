@@ -194,6 +194,7 @@ export default class Locations extends Component {
                     : <h3>No locations to show</h3>
                 }
 
+                <span>Hint: Right click the map to add a location</span>
                 <LocationsMap
                     onClick={() => this.onMapClick()}
                     locations={filteredSortedLocations}
