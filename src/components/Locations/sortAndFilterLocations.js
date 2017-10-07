@@ -25,20 +25,36 @@ const splitByCategories = locations => {
     return groups;
 }
 
+const callWithLowerCase = predicate => (first, second) =>
+    predicate(first.toLowerCase(), second.toLowerCase());
+
 const sortByCategoryPredicate = (locations, predicate) => {
     const locationsByCategory = splitByCategories(locations);
-    const categories = Object.keys(locationsByCategory);
-    categories.sort((first, second) => predicate(first.toLowerCase(), second.toLowerCase()));
-    const sortedLocations = Array.prototype.concat.apply([], categories.map(cat => locationsByCategory[cat]));
+    const categories = Object
+        .keys(locationsByCategory)
+        .sort(callWithLowerCase(predicate));
+    const sortedLocations =
+        Array.prototype.concat.apply([], categories.map(cat => 
+            sortedByName(locationsByCategory[cat]))
+        );
     return sortedLocations;
 };
+
+const compareCategories = (bigger, smaller) => (a, b) => {
+    if (a > b) {
+        return bigger;
+    } else if (a < b) {
+        return smaller;
+    }
+    return 0;
+}
 
 const sortedByCategory = (locations, sortMethod) => {
     switch (sortMethod) {
         case 'asc':
-            return sortByCategoryPredicate(locations, (a, b) => a < b);
+            return sortByCategoryPredicate(locations, compareCategories(1, -1));
         case 'dsc':
-            return sortByCategoryPredicate(locations, (a, b) => a > b);
+            return sortByCategoryPredicate(locations, compareCategories(-1, 1));
         default:
             throw Error(`Reached sortByCategory when sort method is ${sortMethod}`);
     }
@@ -57,6 +73,7 @@ const sortAndFilterLocations = (locations, sortMethod, categoryFilter) => {
     if (sortMethod) {
         return sortedByCategory(filteredLocations, sortMethod);
     }
+
     return sortedByName(filteredLocations);
 };
 
