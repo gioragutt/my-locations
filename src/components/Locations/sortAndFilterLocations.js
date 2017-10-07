@@ -1,7 +1,16 @@
+const nameComparison = (first, second) => {
+    const firstName = first.name.toLowerCase();
+    const secondName = second.name.toLowerCase();
+    if (firstName > secondName) {
+        return 1;
+    } else if (firstName < secondName) {
+        return -1;
+    }
+    return 0;
+}
+
 const sortedByName = (locations) => { 
-    return locations.slice().sort(
-        (first, second) => first.name.toLowerCase() > second.name.toLowerCase()
-    );
+    return locations.slice().sort(nameComparison);
 };
 
 const splitByCategories = locations => {
@@ -48,7 +57,6 @@ const sortAndFilterLocations = (locations, sortMethod, categoryFilter) => {
     if (sortMethod) {
         return sortedByCategory(filteredLocations, sortMethod);
     }
-
     return sortedByName(filteredLocations);
 };
 
