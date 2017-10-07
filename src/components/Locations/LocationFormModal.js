@@ -6,12 +6,13 @@ import LocationForm from './LocationForm';
 
 import { CategoriesListPropType, LocationPropType, CoordinatesPropTypes } from './util';
 import { isLocationValid } from '../../models/location';
+import { PLACEHOLDER_COORDINATES } from '../../constants';
 
 const emptyLocation = (category, defaultCoordinates, defaultAddress) => ({
     name: '',
     address: defaultAddress || '',
     category,
-    coordinates: defaultCoordinates || {lat: 33, long: 33}
+    coordinates: defaultCoordinates || PLACEHOLDER_COORDINATES
 });
 
 export default class LocationFormModal extends Component {
