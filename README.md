@@ -1,3 +1,11 @@
+# Giora Guttsait's My Locations for Welldone Software
+
+The app is deployed on http://gg-my-locations.herokuapp.com.<br>
+It runs on a free dyno, meaning that if it isn't active for 30 minutes it will hibernate,<br>
+So if it doesn't load in a couple of seconds, give it a few more for the VM to load up and serve the site
+
+# Create React App
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
