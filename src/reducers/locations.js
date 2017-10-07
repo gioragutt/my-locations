@@ -25,6 +25,14 @@ const editLocation = (state, {oldLocationId, newLocation}) => {
     }
 }
 
+const deselectIfRemovedSelected = (selected, location) => {
+    if (selected && selected.id === location.id) {
+        return null;
+    }
+
+    return selected;
+}
+
 const validateSelectedExists = (state, selected) => {
     if (selected === null) {
         return null;
@@ -80,7 +88,8 @@ export default (state = INITIAL_STATE, action) => {
         case LOCATIONS_REMOVE:
             return {
                 ...state,
-                items: state.items.filter(location => location !== action.payload)
+                selected: deselectIfRemovedSelected(state.selected, action.payload),
+                items: state.items.filter(location => location.id !== action.payload.id)
             };
         case LOCATIONS_SELECT:
             return {
