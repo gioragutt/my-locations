@@ -4,10 +4,24 @@ const sortedByName = (locations) => {
     );
 };
 
+const splitByCategories = locations => {
+    const groups = {};
+    locations.forEach((loc, i) => {
+        if (!(loc.category in groups)) {
+            groups[loc.category] = [loc]
+        } else {
+            groups[loc.category].push(loc);
+        }
+    });
+    return groups;
+}
+
 const sortByCategoryPredicate = (locations, predicate) => {
-    return sortedByName(locations).sort(
-        (first, second) => predicate(first.category.toLowerCase(), second.category.toLowerCase())
-    );
+    const locationsByCategory = splitByCategories(locations);
+    const categories = Object.keys(locationsByCategory);
+    categories.sort((first, second) => predicate(first.toLowerCase(), second.toLowerCase()));
+    const sortedLocations = Array.prototype.concat.apply([], categories.map(cat => locationsByCategory[cat]));
+    return sortedLocations;
 };
 
 const sortedByCategory = (locations, sortMethod) => {

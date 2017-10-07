@@ -51,6 +51,7 @@ export default (state = INITIAL_STATE, action) => {
         case CATEGORIES_REMOVE:
             return {
                 ...state,
+                filter: state.filter === action.payload ? '' : state.filter,
                 items: state.items.filter(category => category !== action.payload)
             };
         case CATEGORIES_SELECT:

@@ -1,7 +1,9 @@
+import is from '@sindresorhus/is';
+
 const isNumberInRange = (min, max) => value => {
     try {
         const number = Number.parseFloat(value);
-        return number >= min && number <= max;
+        return is.inRange(number, [min, max]);
     } catch(e) {
         return false;
     }

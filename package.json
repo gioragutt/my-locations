@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@sindresorhus/is": "^0.2.1",
     "bootstrap": "^3.3.7",
     "connected-react-router": "^4.2.3",
     "prop-types": "^15.6.0",

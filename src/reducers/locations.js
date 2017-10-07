@@ -12,13 +12,10 @@ import {
 } from '../actions/categories';
 
 import * as uuid from 'uuid';
-import { load } from '../storage';
-
-const { locations } = load(); 
 
 const INITIAL_STATE = {
     selected: null,
-    items: locations || []
+    items: []
 };
 
 const editLocation = (state, {oldLocationId, newLocation}) => {

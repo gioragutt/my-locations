@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   height: 100%;
+  padding-top: 70px;
 }
 
 .footer {
@@ -8,6 +9,6 @@
   line-height: 60px;
 }
 
-.fill-navbar-space {
-  margin-top: 60px;
+.row {
+  margin: 0;
 }

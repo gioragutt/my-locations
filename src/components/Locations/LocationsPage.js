@@ -2,29 +2,18 @@ import React, { Component } from 'react';
 
 import LocationsNavbar from './LocationsNavbar';
 import LocationFormModal from './LocationFormModal';
-import CategoryFilter from './CategoryFilter';
 import LocationsMap from './LocationsMap';
 import LocationsTable from './LocationsTable';
+import Layout from './Layout';
+import CategorySortAndFilter from './CategorySortAndFilter';
 
-import sortAndFilterLocations from './sortAndFilterLocations';
+import { sortAndFilterLocations, toggleSortByCategory } from './util';
+import { toGoogleMapsCoordinates } from '../Map/geolocation';
 import vibrate from '../../vibrate';
 
 import './Locations.css';
 
-const toggleSortByCategory = (sortByCategory) => {
-    switch (sortByCategory) {
-        case null:
-            return 'asc';
-        case 'asc':
-            return 'dsc';
-        case 'dsc':
-            return null;
-        default:
-            return null;
-    }
-}
-
-export default class Locations extends Component {
+export default class LocationsPage extends Component {
     constructor(props) {
         super(props);
         
@@ -33,23 +22,26 @@ export default class Locations extends Component {
             editing: false,
             sortByCategory: null
         };
+
+        this.setAdding = adding => this.setState({adding});
+        this.setEditing = editing => this.setState({editing});
     }
 
     openAddDialog() {
         this.deselect();
-        this.setState({adding: true});
+        this.setAdding(true);
     }
 
     closeAddDialog() {
-        this.setState({adding: false});
+        this.setAdding(false);
     }
 
     openEditDialog() {
-        this.setState({editing: true});
+        this.setEditing(true);
     }
 
     closeEditDialog() {
-        this.setState({editing: false});
+        this.setEditing(false);
     }
 
     deselect() {
@@ -67,7 +59,8 @@ export default class Locations extends Component {
     }
 
     select(location) {
-        this.toggleSelect(location, loc => this.map.panTo(loc.coordinates));
+        this.toggleSelect(location, loc =>
+            this.map.getGM().panTo(toGoogleMapsCoordinates(loc.coordinates)));
     }
 
     selectFromMap(location) {
@@ -156,44 +149,39 @@ export default class Locations extends Component {
         this.map.resetAddition();
     }
 
-    render() {
+    renderCategorySortAndFilter() {
+        return (
+            <div className="category-filter fill-navbar-space">
+                <CategorySortAndFilter
+                    onFilterChange={this.props.setCategoryFilter}
+                    resetFilter={this.props.resetCategoryFilter}
+                    filterValue={this.props.categoryFilter}
+                    availableCategories={this.props.categories}
+                    sortByCategory={this.state.sortByCategory}
+                    toggleCategorySort={() => this.toggleCategorySort()}
+                />
+            </div>
+        )
+    }
+
+    renderBody() {
         const filteredSortedLocations = sortAndFilterLocations(
             this.props.locations,
             this.state.sortByCategory,
             this.props.categoryFilter
         );
 
-        return (
+        const locations = (
+            <LocationsTable
+                locations={filteredSortedLocations}
+                categoryFilter={this.props.categoryFilter}
+                locationSelected={loc => this.select(loc)}
+                selectedLocation={this.props.selectedLocation}
+            />
+        );
+        
+        const main = (
             <div>
-                <LocationsNavbar
-                    locationSelected={!!this.props.selectedLocation}
-                    onAdd={() => this.openAddDialog()}
-                    onRemove={() => this.removeSelectedCategory()}
-                    onEdit={() => this.openEditDialog()} 
-                />
-                <div className="category-filter fill-navbar-space">
-                    <CategoryFilter
-                        onChange={this.props.setCategoryFilter}
-                        resetFilter={this.props.resetCategoryFilter}
-                        value={this.props.categoryFilter}
-                        availableCategories={this.props.categories}
-                    />
-                </div>
-                
-                {this.renderAddForm()}
-                {this.renderEditForm()}
-                
-                { filteredSortedLocations.length > 0
-                    ? <LocationsTable
-                        locations={filteredSortedLocations}
-                        locationSelected={loc => this.select(loc)}
-                        selectedLocation={this.props.selectedLocation}
-                        sortByCategory={this.state.sortByCategory}
-                        toggleCategorySort={() => this.toggleCategorySort()}
-                    />
-                    : <h3>No locations to show</h3>
-                }
-
                 <span>Hint: Right click the map to add a location</span>
                 <LocationsMap
                     onClick={() => this.onMapClick()}
@@ -204,8 +192,38 @@ export default class Locations extends Component {
                     onRightClick={() => this.deselect()}
                     locationClicked={loc => this.selectFromMap(loc)}
                     onAdditionClick={() => this.onAddFromMap()}
+                    onLocationRemove={() => this.removeSelectedCategory()}
+                    onLocationEdit={() => this.openEditDialog()}
                 />
-                <div style={{height: `70px`}}/>
+            </div>
+        );
+
+        return (
+            <Layout
+                side={
+                    <div>
+                        {this.renderCategorySortAndFilter()}
+                        <br></br>
+                        {locations}
+                    </div>
+                }
+                main = {main}
+            />
+        );
+    }
+
+    render() {
+        return (
+            <div>
+                <LocationsNavbar
+                    locationSelected={!!this.props.selectedLocation}
+                    onAdd={() => this.openAddDialog()}
+                    onRemove={() => this.removeSelectedCategory()}
+                    onEdit={() => this.openEditDialog()} 
+                />                
+                {this.renderAddForm()}
+                {this.renderEditForm()}
+                {this.renderBody()}
             </div>
         )
     }

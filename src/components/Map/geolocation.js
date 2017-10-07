@@ -15,3 +15,5 @@ export const addressByCoordinates = ({lat, long}) => {
             return null;
         });
 }
+
+export const toGoogleMapsCoordinates = coordinates => ({ lat: coordinates.lat, lng: coordinates.long });

@@ -1,42 +1,108 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 
-import { Table, Glyphicon } from 'react-bootstrap';
-import LocationRows from './LocationRows';
+import { Label, ListGroup, ListGroupItem } from 'react-bootstrap';
 
-const SortGlyph = ({sort}) => {
-    if (sort === 'asc') {
-        return <span>{' '}<Glyphicon glyph="chevron-up"/></span>
-    } else if (sort === 'dsc') {
-        return <span>{' '}<Glyphicon glyph="chevron-down"/></span>
-    }
-
-    return null;
-}
-
-const LocationsTable = ({locations, selectedLocation, sortByCategory, locationSelected, toggleCategorySort}) => (
-    <div className="container locations-table">
-        <Table responsive>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th className="sortable" onClick={toggleCategorySort}>
-                        Category
-                        <SortGlyph sort={sortByCategory} />
-                    </th>
-                    <th>Address</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
-                </tr>
-            </thead>
-            <tbody>
-                <LocationRows
-                    locations={locations}
-                    onClick={locationSelected}
-                    selectedLocation={selectedLocation}
-                />
-            </tbody>
-        </Table>
+const LocationItemHeader = ({
+    name,
+    category
+}) => (
+    <div style={{display: `flex`}}>
+        <b>{name}</b>
+        <div style={{flex: `1`}}/>
+        <div>
+            {
+                !!category 
+                ? <Label bsStyle="info">{category}</Label>
+                : <Label bsStyle="danger">Missing Category</Label>
+            }
+            
+        </div>
     </div>
 );
 
-export default LocationsTable;
+const LocationItem =({
+    location,
+    locationSelected,
+    isLocationSelected,
+    isCategoryInvalid
+}) => (
+    <ListGroupItem
+        header={<LocationItemHeader name={location.name} category={location.category} />}
+        className={`locations-list-item-${location.id}`}
+        active={isLocationSelected}
+        bsStyle={(!isLocationSelected && isCategoryInvalid) ? 'warning' : null}
+        onClick={() => locationSelected(location)}
+    >
+        {location.address}
+    </ListGroupItem>
+);
+
+const LocationsList = ({
+    locations,
+    selectedLocation,
+    locationSelected
+}) => (
+    <ListGroup className="locations-list">
+    {
+        locations.map(loc => (
+            <LocationItem
+                location={loc}
+                key={loc.id}
+                isLocationSelected={selectedLocation && loc.id === selectedLocation.id}
+                isCategoryInvalid={!loc.category}
+                locationSelected={locationSelected}
+            />
+        ))
+    }
+    </ListGroup>
+);
+
+const NoLocations = ({categoryFilter}) => (
+    <div>
+        No locations to show
+        {categoryFilter && [
+            ' for ',
+            <Label bsStyle="info" key="no-locations-for-category">{categoryFilter}</Label>
+        ]}
+    </div>
+);
+
+export default class LocationsTable extends PureComponent {
+
+    scrollToItem(id) {
+        const node = document.querySelector(`.locations-list-item-${id}`);
+        node.scrollIntoView({
+            block: 'nearest'
+        });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const next = nextProps.selectedLocation;
+        if (!next) {
+            return;
+        }
+
+        this.scrollToItem(next.id);
+    }
+
+    render() {
+        const {
+            locations,
+            categoryFilter,
+            selectedLocation,
+            locationSelected
+        } = this.props;
+
+        if (locations.length === 0) {
+            return <NoLocations categoryFilter={categoryFilter} />;
+        }
+    
+        return (
+            <LocationsList
+                locations={locations}
+                selectedLocation={selectedLocation}
+                locationSelected={locationSelected}
+            />
+        );
+    }
+}

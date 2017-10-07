@@ -49,11 +49,8 @@ export default class LocationsMap extends Component {
         };
     }
 
-    panTo(coordinates) {
-        this.map.panTo({
-            lat: coordinates.lat,
-            lng: coordinates.long
-        });
+    getGM() {
+        return this.map;
     }
 
     getMapRef(map) {
@@ -70,6 +67,8 @@ export default class LocationsMap extends Component {
             onAdditionClick,
             onAdditionCancel,
             locationInfoClosed,
+            onLocationRemove,
+            onLocationEdit,
             onRightClick, // Ignore, not to pass to map
             ...props
         } = this.props;
@@ -109,6 +108,8 @@ export default class LocationsMap extends Component {
                             onClick={locationClicked}
                             onCloseClick={locationInfoClosed}
                             isSelected={selectedLocation && loc.id === selectedLocation.id}
+                            onRemove={onLocationRemove}
+                            onEdit={onLocationEdit}
                         />
                     ))
                 }

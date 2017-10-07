@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@sindresorhus/is@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.2.1.tgz#537fe5655c9e6b22313776494abc712f0b327e79"
+
 abab@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"
@@ -5265,8 +5269,8 @@ react-error-overlay@^2.0.2:
     source-map "0.5.6"
 
 react-google-maps@^8.3.4:
-  version "8.3.4"
-  resolved "https://registry.yarnpkg.com/react-google-maps/-/react-google-maps-8.3.4.tgz#883ece40f092a191c32cd0cd475b0b15a44f0907"
+  version "8.3.5"
+  resolved "https://registry.yarnpkg.com/react-google-maps/-/react-google-maps-8.3.5.tgz#52a8fa9de0815a74027c6a0bc1a42a517c5e5a7c"
   dependencies:
     babel-runtime "^6.11.6"
     can-use-dom "^0.1.0"

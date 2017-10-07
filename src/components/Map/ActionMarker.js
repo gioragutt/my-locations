@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Marker, InfoWindow } from 'react-google-maps';
-import { toGoogleMapsCoordinates } from './LocationMarker';
+import { toGoogleMapsCoordinates } from './geolocation';
 import { Button } from 'react-bootstrap';
 
 const ActionMarker = ({coordinates, description, action, onClick, onCloseClick}) => {

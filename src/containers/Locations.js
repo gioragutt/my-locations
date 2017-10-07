@@ -1,11 +1,11 @@
-import { connect } from 'react-redux'
-import Locations from '../components/Locations/Locations'
+import { connect } from 'react-redux';
+import LocationsPage from '../components/Locations/LocationsPage';
 import {
     selectLocation,
     removeLocation,
     addLocation,
     editLocation
-} from '../actions/locations'
+} from '../actions/locations';
 
 import {
     setCategoryFilter,
@@ -28,4 +28,4 @@ const mapDispatchToProps = {
     resetCategoryFilter
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Locations)
+export default connect(mapStateToProps, mapDispatchToProps)(LocationsPage);

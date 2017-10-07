@@ -1,16 +1,8 @@
-.locations-table {
-    text-align: left;
-    max-height: 300px;
-    min-height: 300px;
+.category-control-lable {
+    margin-right: 10px;
+}
+
+.locations-list {
+    max-height: 470px;
     overflow-y: scroll;
-    margin-bottom: 20px;
-}
-
-.category-filter {
-    margin-bottom: 10px;
-}
-
-.sortable {
-    text-decoration: underline;
-    cursor: pointer;
 }
