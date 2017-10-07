@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Map, ActionMarker, LocationMarker, addressByCoordinates } from '../Map';
+import { Map, AdditionMarker, LocationMarker, addressByCoordinates } from '../Map';
 
 import { LocationPropType } from './util';
 
@@ -103,17 +103,11 @@ export default class LocationsMap extends Component {
             >
                 { 
                     additionCoordinate &&
-                    <ActionMarker
+                    <AdditionMarker
                         coordinates={additionCoordinate}
+                        address={additionCoordinateAddress}
                         onClick={onAdditionClick}
                         onCloseClick={() => { this.resetAddition(); invoke(onAdditionCancel); }}
-                        description={
-                            <div>
-                                { additionCoordinateAddress && <div><b>Address:</b> {additionCoordinateAddress}</div> }
-                                <div><b>Coordinates:</b> {`${additionCoordinate.lat}, ${additionCoordinate.long}`}</div>
-                            </div>
-                        }
-                        action="Add"
                     />
                 }
                 {
@@ -123,7 +117,7 @@ export default class LocationsMap extends Component {
                             location={loc}
                             onClick={locationClicked}
                             onCloseClick={locationInfoClosed}
-                            isSelected={selectedLocation && loc.id === selectedLocation.id}
+                            isSelected={selectedLocation ? loc.id === selectedLocation.id : false}
                             onRemove={onLocationRemove}
                             onEdit={onLocationEdit}
                         />
