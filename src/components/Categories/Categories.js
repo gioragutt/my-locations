@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import CategoriesNavbar from './CategoriesNavbar';
 import CategoryFormModal from './CategoryFormModal';
 
 export default class Categories extends Component {
+    static propTypes = {
+        selectedCategory: PropTypes.string.isRequired,
+        addCategory: PropTypes.func.isRequired,
+        editCategory: PropTypes.func.isRequired,
+        selectCategory: PropTypes.func.isRequired,
+        categories: PropTypes.arrayOf(PropTypes.string).isRequired
+    }
+
     constructor(props) {
         super(props);
         

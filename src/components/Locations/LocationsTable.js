@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 
+import { LocationPropType } from './util';
 import { Label, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 const LocationItemHeader = ({
@@ -68,6 +70,12 @@ const NoLocations = ({categoryFilter}) => (
 );
 
 export default class LocationsTable extends PureComponent {
+    static propTypes = {
+        locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired,
+        categoryFilter: PropTypes.string.isRequired,
+        selectedLocation: LocationPropType,
+        locationSelected: PropTypes.func.isRequired
+    }
 
     scrollToItem(id) {
         const node = document.querySelector(`.locations-list-item-${id}`);

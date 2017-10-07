@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { ControlLabel, Button, Form, ButtonGroup } from 'react-bootstrap';
 
+import { CategoriesListPropType, SortByCategoryPropType } from './util';
 import CategorySort from './CategorySort';
 import CategoryFilter from './CategoryFilter';
 
@@ -29,5 +31,14 @@ const CategorySortAndFilter = ({
         </ButtonGroup>
     </Form>
 );
+
+CategorySortAndFilter.propTypes = {
+    filterValue: PropTypes.string.isRequired,
+    availableCategories: CategoriesListPropType,
+    onFilterChange: PropTypes.func.isRequired,
+    resetFilter: PropTypes.func.isRequired,
+    sortByCategory: SortByCategoryPropType,
+    toggleCategorySort: PropTypes.func.isRequired
+};
 
 export default CategorySortAndFilter;

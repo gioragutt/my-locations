@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
@@ -38,18 +39,10 @@ const CategoryFilter = ({
     </DropdownButton>
 );
 
-// const CategoryFilter = ({value, availableCategories, onChange}) => (
-//     <FormControl
-//         componentClass="select"
-//         placeholder="Category"
-//         onChange={e => onChange(e.target.value)}
-//         value={value}
-//     >
-//         <option value="">Filter Category</option>
-//         {availableCategories.map(cat =>
-//             <option value={cat} key={cat}>{cat}</option>            
-//         )}
-//     </FormControl>
-// );
+CategoryFilter.propTypes = {
+    value: PropTypes.string.isRequired,
+    availableCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
+    onChange: PropTypes.func.isRequired
+};
 
 export default CategoryFilter;

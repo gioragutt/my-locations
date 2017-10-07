@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 
 import { Form, FormGroup, Col, FormControl, ControlLabel, Button } from 'react-bootstrap';
 
+import { CategoriesListPropType, LocationPropType } from './util';
 import { isLatitudeValid, isLongitudeValid } from '../../models/location';
 
 const FormRow = ({children, title, validationState}) => (
@@ -31,6 +33,13 @@ const validateCategory = (category, categories) => {
 }
 
 export default class LocationForm extends Component {
+    static propTypes = {
+        categories: CategoriesListPropType,
+        onSubmit: PropTypes.func.isRequired,
+        locationChanged: PropTypes.func.isRequired,
+        location: LocationPropType.isRequired
+    }
+
     constructor(props) {
         super(props);
 

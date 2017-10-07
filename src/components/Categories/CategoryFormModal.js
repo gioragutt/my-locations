@@ -1,9 +1,16 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 import { Modal, Button, FormGroup, FormControl } from 'react-bootstrap';
 
 export default class CategoryFromModal extends Component {
-    
+    static propTypes = {
+        category: PropTypes.string,
+        canSubmit: PropTypes.func.isRequired,
+        onSubmit: PropTypes.func.isRequired,
+        onClose: PropTypes.func.isRequired,
+    }
+
     constructor(props) {
         super(props);
 

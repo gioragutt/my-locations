@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 
 import {
     Navbar as BsNavbar,
@@ -6,7 +7,11 @@ import {
     NavItem
 } from 'react-bootstrap';
 
-const MenuNavItem = ({nav, navIndex, disabled}) => {
+const MenuNavItem = ({
+  nav,
+  navIndex,
+  disabled
+}) => {
   return (
     <NavItem
       eventKey={navIndex}
@@ -44,5 +49,15 @@ const Navbar = ({title = '', items = []}) => (
     </BsNavbar.Collapse>
   </BsNavbar>
 );
+
+
+Navbar.propTypes = {
+  title: PropTypes.string,
+  items: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    disabled: PropTypes.bool,
+    onClick: PropTypes.func.isRequired
+  }))
+};
 
 export default Navbar;

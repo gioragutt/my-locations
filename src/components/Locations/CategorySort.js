@@ -1,5 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
+import { SortByCategoryPropType } from './util';
 import { Glyphicon, Button } from 'react-bootstrap';
 
 const SortGlyph = ({sort}) => {
@@ -12,10 +14,18 @@ const SortGlyph = ({sort}) => {
     return null;
 }
 
-const CategorySort = ({sortByCategory, toggleCategorySort}) => (
+const CategorySort = ({
+    sortByCategory,
+    toggleCategorySort
+}) => (
     <Button onClick={toggleCategorySort}>
         Sort <SortGlyph sort={sortByCategory}/>
     </Button>
 );
+
+CategorySort.propTypes = {
+    sortByCategory: SortByCategoryPropType,
+    toggleCategorySort: PropTypes.func.isRequired
+};
 
 export default CategorySort;

@@ -1,7 +1,13 @@
 import React from 'react';
 import Navbar from '../Navbar';
+import PropTypes from 'prop-types'
 
-const CategoriesNavbar = ({categorySelected, onAdd, onRemove, onEdit}) => {
+const CategoriesNavbar = ({
+    categorySelected,
+    onAdd,
+    onRemove,
+    onEdit
+}) => {
     return <Navbar
         title="Categories"
         items={[
@@ -21,6 +27,13 @@ const CategoriesNavbar = ({categorySelected, onAdd, onRemove, onEdit}) => {
             },
         ]}
     />
+};
+
+CategoriesNavbar.propTypes = {
+    categorySelected: PropTypes.bool.isRequired,
+    onAdd: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired
 };
 
 export default CategoriesNavbar;

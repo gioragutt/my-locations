@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 
 import LocationsNavbar from './LocationsNavbar';
 import LocationFormModal from './LocationFormModal';
@@ -7,13 +8,32 @@ import LocationsTable from './LocationsTable';
 import Layout from './Layout';
 import CategorySortAndFilter from './CategorySortAndFilter';
 
-import { sortAndFilterLocations, toggleSortByCategory } from './util';
+import {
+    sortAndFilterLocations,
+    toggleSortByCategory,
+    CategoriesListPropType,
+    LocationPropType
+} from './util';
 import { toGoogleMapsCoordinates } from '../Map/geolocation';
 import vibrate from '../../vibrate';
 
 import './Locations.css';
 
 export default class LocationsPage extends Component {
+    static propTypes = {
+        locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired,
+        selectedLocation: LocationPropType,
+        categories: CategoriesListPropType,
+        categoryFilter: PropTypes.string.isRequired,
+        
+        selectLocation: PropTypes.func.isRequired,
+        removeLocation: PropTypes.func.isRequired,
+        addLocation: PropTypes.func.isRequired,
+        editLocation: PropTypes.func.isRequired,
+        setCategoryFilter: PropTypes.func.isRequired,
+        resetCategoryFilter: PropTypes.func.isRequired
+    }
+
     constructor(props) {
         super(props);
         

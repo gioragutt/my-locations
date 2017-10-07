@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 import { Modal, Button } from 'react-bootstrap';
 import LocationForm from './LocationForm';
 
+import { CategoriesListPropType, LocationPropType, CoordinatesPropTypes } from './util';
 import { isLocationValid } from '../../models/location';
 
 const emptyLocation = (category, defaultCoordinates, defaultAddress) => ({
@@ -13,6 +15,14 @@ const emptyLocation = (category, defaultCoordinates, defaultAddress) => ({
 });
 
 export default class LocationFormModal extends Component {
+    static propTypes = {
+        location: LocationPropType,
+        categories: CategoriesListPropType,
+        defaultCoordinates: CoordinatesPropTypes,
+        defaultAddress: PropTypes.string,
+        onSubmit: PropTypes.func.isRequired,
+        onClose: PropTypes.func.isRequired
+    }
     
     constructor(props) {
         super(props);

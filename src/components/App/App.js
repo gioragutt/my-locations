@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { ConnectedRouter } from 'connected-react-router'
 import { Route, Redirect, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types'
 
 import './App.css';
 
@@ -10,21 +11,23 @@ import Footer from '../../containers/Footer';
 
 import { CATEGORIES_ROUTE, LOCATIONS_ROUTE } from '../../constants';
 
-class App extends Component {
-  render() {
-    return (
-      <ConnectedRouter history={this.props.history}>
-        <div className="App">
-          <Switch>
-            <Route path={LOCATIONS_ROUTE} component={Locations} />
-            <Route path={CATEGORIES_ROUTE} component={Categories} />
-            <Redirect from="/" to={LOCATIONS_ROUTE} />
-          </Switch>
-          <Footer />
-        </div>
-      </ConnectedRouter>
-    );
-  }
-}
+const App = ({
+  history
+}) => (
+  <ConnectedRouter history={history}>
+    <div className="App">
+      <Switch>
+        <Route path={LOCATIONS_ROUTE} component={Locations} />
+        <Route path={CATEGORIES_ROUTE} component={Categories} />
+        <Redirect from="/" to={LOCATIONS_ROUTE} />
+      </Switch>
+      <Footer />
+    </div>
+  </ConnectedRouter>
+);
+
+App.propTypes = {
+  history: PropTypes.any.isRequired
+};
 
 export default App;

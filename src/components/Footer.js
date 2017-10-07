@@ -1,11 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 
 import { Link } from 'react-router-dom';
 import { Navbar, Button, Glyphicon } from 'react-bootstrap';
 
 import { CATEGORIES_ROUTE, LOCATIONS_ROUTE } from '../constants';
 
-const GlyphLink = ({icon, path, currentRoute}) => (
+const GlyphLink = ({
+  icon,
+  path,
+  currentRoute
+}) => (
   <Link to={path}>    
     <Button bsStyle={currentRoute === path ? 'primary' : 'default'}>
       <Glyphicon glyph={icon}></Glyphicon>
@@ -13,7 +18,9 @@ const GlyphLink = ({icon, path, currentRoute}) => (
   </Link>
 );
 
-const Footer = ({currentRoute}) => (
+const Footer = ({
+  currentRoute
+}) => (
   <Navbar fixedBottom>
     <footer className="footer">
       <GlyphLink path={LOCATIONS_ROUTE} icon="map-marker" currentRoute={currentRoute}/>
@@ -22,5 +29,9 @@ const Footer = ({currentRoute}) => (
     </footer>
   </Navbar> 
 );
+
+Footer.propTypes = {
+  currentRoute: PropTypes.string.isRequired
+};
 
 export default Footer;

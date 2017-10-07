@@ -1,8 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { Col, Row } from 'react-bootstrap';
 
-const Layout = ({side, main}) => (
+const Layout = ({
+    side,
+    main
+}) => (
     <Row>
         <Col xs={6} sm={8}>
             {main}
@@ -12,5 +16,10 @@ const Layout = ({side, main}) => (
         </Col>
     </Row>
 );
+
+Layout.propTypes = {
+    side: PropTypes.element.isRequired,
+    main: PropTypes.element.isRequired
+};
 
 export default Layout;

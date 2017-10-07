@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 import { Map, ActionMarker, LocationMarker, addressByCoordinates } from '../Map';
+
+import { LocationPropType } from './util';
 
 const invoke = method => {
     if (method) {
@@ -9,6 +12,19 @@ const invoke = method => {
 };
 
 export default class LocationsMap extends Component {
+    static propTypes = {
+        locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired,
+        selectedLocation: LocationPropType,
+        locationClicked: PropTypes.func.isRequired,
+        onAdditionClick: PropTypes.func.isRequired,
+        onAdditionCancel: PropTypes.func,
+        locationInfoClosed: PropTypes.func.isRequired,
+        onLocationRemove: PropTypes.func.isRequired,
+        onLocationEdit: PropTypes.func.isRequired,
+        onRightClick: PropTypes.func,
+        onClick: PropTypes.func,
+    }
+
     constructor(props) {
         super(props);
 

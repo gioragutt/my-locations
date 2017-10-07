@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 
 import { compose, withProps } from 'recompose';
 import { withScriptjs, withGoogleMap, GoogleMap } from 'react-google-maps';
@@ -28,5 +29,15 @@ const Map = compose(
     {children}
   </GoogleMap>
 ));
+
+Map.propTypes = {
+  mapRef: PropTypes.func,
+  defaultZoom: PropTypes.number,
+  defaultCenter: PropTypes.shape({
+    lat: PropTypes.number.isRequired,
+    lng: PropTypes.number.isRequired
+  }),
+  children: PropTypes.any
+};
 
 export default Map;

@@ -1,7 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types'
+
 import { Marker, InfoWindow } from 'react-google-maps'
 import { ButtonGroup, Button } from 'react-bootstrap';
 
+import { LocationPropType } from '../Locations/util';
 import { toGoogleMapsCoordinates } from './geolocation';
 
 const InfoRow = ({title, value}) => {
@@ -62,5 +65,14 @@ const LocationMarker = ({
         }
     </Marker>
 );
+
+LocationMarker.propTypes = {
+    location: LocationPropType.isRequired,
+    onClick: PropTypes.func.isRequired,
+    isSelected: PropTypes.bool.isRequired,
+    onCloseClick: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired
+};
 
 export default LocationMarker;
